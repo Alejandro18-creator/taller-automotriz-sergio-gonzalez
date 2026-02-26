@@ -1,0 +1,143 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #B71C1C 100%);
+    color: var(--color-texto);
+}
+
+.container {
+    padding: 40px;
+    background-color: var(--color-blanco);
+    max-width: 1000px;
+    margin: 60px auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+h1 {
+    color: var(--color-negro);
+}
+* {
+    box-sizing: border-box;
+}
+/* Layout general */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: linear-gradient(
+        180deg,
+        #111111 0%,
+        #1A1A1A 60%,
+        #8B0000 100%
+    );
+    color: white;
+    padding: 20px;
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-area img {
+    width: 140px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 12px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar li:hover {
+    background-color: #D32F2F;
+}
+
+/* Área principal */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+}
+
+/* Área de trabajo */
+.content {
+    flex: 1;
+    padding: 30px;
+    background-color: #E5E5E5;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.topbar {
+    padding: 20px 30px;
+    background-color: #111111;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #8B0000;
+}
+
+/* Contenedor izquierdo */
+.topbar-left {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Taller Automotriz */
+.brand-name {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #D32F2F;
+}
+
+/* Sergio González */
+.owner-name {
+    font-size: 15px;
+    color: #FFFFFF;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.owner-name::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #D32F2F, transparent);
+    margin-top: 6px;
+}
+
+.topbar h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.user-info {
+    font-size: 14px;
+    background-color: #8B0000;
+    padding: 8px 14px;
+    border-radius: 20px;
+}
