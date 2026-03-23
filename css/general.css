@@ -1,0 +1,482 @@
+/**
+ * GENERAL.CSS
+ * Estilos compartidos por todos los módulos
+ */
+
+/* Botones */
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #8b0000;
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  background-color: #2b2b2b;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #1a1a1a;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.mode-switcher {
+  display: flex;
+  gap: 8px;
+  margin-right: 12px;
+}
+
+.mode-btn {
+  border: 1px solid #4b4b4b;
+  background: #222;
+  color: #eaeaea;
+  padding: 8px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mode-btn.active {
+  background: #d32f2f;
+  border-color: #d32f2f;
+  color: #fff;
+}
+
+.mode-btn:hover {
+  border-color: #d32f2f;
+}
+
+/* Contenedores principales */
+.clientes-container,
+.vehiculos-container,
+.ordenes-container,
+.reportes-container,
+.reservas-container {
+  animation: slideIn 0.3s ease;
+}
+
+.publico-container,
+.publico-form-container {
+  animation: slideIn 0.3s ease;
+}
+
+.publico-hero {
+  background: linear-gradient(120deg, #d32f2f 0%, #9f1010 100%);
+  color: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.publico-hero h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+
+.publico-hero p {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.publico-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.publico-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #d32f2f;
+}
+
+.publico-card i {
+  font-size: 24px;
+  color: #d32f2f;
+}
+
+.publico-card h3 {
+  margin: 10px 0 8px 0;
+}
+
+.publico-card p {
+  margin: 0;
+  color: #333;
+}
+
+.publico-form-container > h2 {
+  margin-top: 0;
+}
+
+.publico-form-container > p {
+  margin-bottom: 18px;
+  color: #333;
+}
+
+.solicitudes-container {
+  animation: slideIn 0.3s ease;
+}
+
+.solicitudes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.solicitudes-header h2 {
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.solicitudes-info {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #444;
+}
+
+.estado-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.estado-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.estado-en_proceso {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.estado-cerrada {
+  background: #d4edda;
+  color: #155724;
+}
+
+.estado-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.estado-select {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+/* Headers de secciones */
+.clientes-header,
+.vehiculos-header,
+.ordenes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+.clientes-header h2,
+.vehiculos-header h2,
+.ordenes-header h2,
+.reportes-container h2,
+.reservas-container h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 24px;
+}
+
+/* Tablas */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #d32f2f;
+}
+
+.table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Modales */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  animation: slideInUp 0.3s ease;
+}
+
+.modal-content h3 {
+  margin: 0 0 20px 0;
+  color: #1a1a1a;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.close {
+  color: #666;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 20px;
+}
+
+.close:hover {
+  color: #d32f2f;
+}
+
+/* Filtros */
+.ordenes-filtros,
+.reportes-filtros {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ordenes-filtros select,
+.reportes-filtros select,
+.reportes-filtros input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.filtro-grupo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filtro-grupo label {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+/* Formularios */
+.reserva-form {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+/* Mensajes */
+.mensaje {
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 6px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Activo en menú */
+.sidebar li.active {
+  background-color: #d32f2f;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .topbar-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .mode-switcher {
+    margin-right: 0;
+  }
+
+  .clientes-header,
+  .vehiculos-header,
+  .ordenes-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+  }
+}

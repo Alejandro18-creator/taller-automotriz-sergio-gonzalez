@@ -1,110 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Taller Mecánico</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/general.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/reportes.css" />
+    <link rel="stylesheet" href="css/reservas.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="layout">
+      <aside class="sidebar">
+        <div class="logo-area">
+          <img src="img/logo.jpg" alt="Logo Taller" />
+        </div>
 
-        <aside class="sidebar">
-            <div class="logo-area">
-                <img src="img/logo.jpg" alt="Logo Taller">
+        <nav>
+          <ul id="sidebarMenu"></ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1 class="brand-name">Taller Automotriz</h1>
+            <span id="modeDescription" class="owner-name"
+              >Información, atención y cotizaciones para clientes</span
+            >
+          </div>
+
+          <div class="topbar-right">
+            <div class="mode-switcher">
+              <button type="button" class="mode-btn active" data-mode="publico">
+                <i class="fas fa-globe"></i> Público
+              </button>
+              <button type="button" class="mode-btn" data-mode="taller">
+                <i class="fas fa-lock"></i> Taller
+              </button>
             </div>
+            <span id="modeLabel" class="user-info">
+              <i class="fas fa-eye"></i> Vista Pública
+            </span>
+          </div>
+        </header>
 
-            <nav>
-                <ul>
-                    <li><i class="fas fa-chart-line"></i> Dashboard</li>
-                    <li><i class="fas fa-users"></i> Clientes</li>
-                    <li><i class="fas fa-car"></i> Vehículos</li>
-                    <li><i class="fas fa-file-invoice"></i> Órdenes</li>
-                    <li><i class="fas fa-chart-bar"></i> Reportes</li>
-                    <li id="menuReserva"><i class="fas fa-calendar-check"></i> Reservar Hora</li>
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="main-content">
-
-            <header class="topbar">
-                <div class="topbar-left">
-                    <h1 class="brand-name">Taller Automotriz</h1>
-                    <span class="owner-name">Sergio González</span>
-                </div>
-
-                <div class="topbar-right">
-                    <span class="user-info">
-                        <i class="fas fa-user"></i> Sergio González
-                    </span>
-                </div>
-            </header>
-
-            <section class="content">
-
-<div id="pantallaInicio">
-<p>Bienvenido al sistema del taller.</p>
-</div>
-
-<div id="pantallaReserva" style="display:none;">
-
-<h2>Reservar Hora</h2>
-
-<form>
-
-<label>Nombre</label>
-<input type="text" placeholder="Nombre completo">
-
-<label>Teléfono</label>
-<input type="text" placeholder="Teléfono">
-
-<label>Marca del vehículo</label>
-<select id="marca">
-<option value="">Seleccione una marca</option>
-</select>
-
-<label>Modelo</label>
-<select id="modelo">
-<option value="">Seleccione modelo</option>
-</select>
-
-<label>Patente</label>
-<input type="text" placeholder="Patente">
-
-<label>Fecha</label>
-<input type="date">
-
-<button type="submit">Solicitar Hora</button>
-
-</form>
-
-</div>
-
-</section>
-        </main>
-
+        <section class="content">
+          <!-- El contenido se cargará dinámicamente aquí -->
+        </section>
+      </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   
 
     <script>
-        const supabaseUrl = 'https://ocqvpbwqovxprigfwqcc.supabase.co'
-        const supabaseKey = 'sb_publishable_5LJ8bhujNmgyTRin-gc-ig_X4968E_B'
+      window.SUPABASE_URL = "https://ocqvpbwqovxprigfwqcc.supabase.co";
+      window.SUPABASE_KEY = "sb_publishable_5LJ8bhujNmgyTRin-gc-ig_X4968E_B";
 
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
-
-        console.log("Supabase conectado:", supabase)
+      if (
+        window.supabase &&
+        typeof window.supabase.createClient === "function"
+      ) {
+        window.supabaseClient = window.supabase.createClient(
+          window.SUPABASE_URL,
+          window.SUPABASE_KEY,
+        );
+        console.log("Supabase conectado:", window.supabaseClient);
+      } else {
+        console.warn("SDK de Supabase no disponible al cargar la página");
+      }
     </script>
 
-    <script src="js/app.js"></script>
-
-</body>
-
+    <!-- Cargar módulos como ES6 -->
+    <script type="module" src="js/router.js"></script>
+  </body>
 </html>

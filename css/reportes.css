@@ -1,0 +1,63 @@
+/**
+ * REPORTES.CSS
+ * Estilos específicos para la sección de reportes
+ */
+
+.reportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 25px 0;
+}
+
+.reporte-card {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-top: 4px solid #d32f2f;
+  transition: transform 0.3s ease;
+}
+
+.reporte-card:hover {
+  transform: translateY(-5px);
+}
+
+.reporte-card h3 {
+  margin: 0 0 15px 0;
+  color: #1a1a1a;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.numero-grande {
+  font-size: 36px;
+  font-weight: bold;
+  color: #d32f2f;
+  margin: 15px 0;
+}
+
+.reporte-card small {
+  color: #999;
+  font-size: 12px;
+}
+
+/* Tabla de reportes */
+.reportes-tabla {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reportes-tabla h3 {
+  margin: 0 0 20px 0;
+  color: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+  .reportes-grid {
+    grid-template-columns: 1fr;
+  }
+}
