@@ -64,3 +64,7 @@ for update
 to anon
 using (true)
 with check (true);
+
+-- Columna para almacenar la fecha agendada por el usuario público
+alter table public.solicitudes_publicas
+add column if not exists fecha_agendada date;

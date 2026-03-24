@@ -203,6 +203,23 @@
   font-size: 12px;
 }
 
+.fecha-agendada-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fecha-agendada-badge i {
+  color: #388e3c;
+}
+
 /* Headers de secciones */
 .clientes-header,
 .vehiculos-header,
