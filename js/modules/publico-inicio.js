@@ -9,7 +9,7 @@ const PublicoInicioModule = {
     return `
       <div class="publico-container">
         <section class="publico-hero">
-          <h2>Bienvenido a Taller Automotriz</h2>
+          <h2>Bienvenido a Taller Automotriz Sebastian Gonzalez</h2>
           <p>
             Servicio mecánico integral, mantenciones, diagnóstico y reparación.
             Si quieres cotizar o solicitar atención, usa las opciones del menú público.

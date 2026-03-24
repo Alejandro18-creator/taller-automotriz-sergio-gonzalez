@@ -31,7 +31,9 @@ const SolicitudesPublicasModule = {
               <th>Estado</th>
               <th>Nombre</th>
               <th>Teléfono</th>
-              <th>Vehículo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
               <th>Detalle</th>
               <th>Fecha Agendada</th>
               <th>Recibido</th>
@@ -40,7 +42,7 @@ const SolicitudesPublicasModule = {
           </thead>
           <tbody id="solicitudesBody">
             <tr>
-              <td colspan="10" style="text-align: center; padding: 20px;">Cargando solicitudes...</td>
+              <td colspan="12" style="text-align: center; padding: 20px;">Cargando solicitudes...</td>
             </tr>
           </tbody>
         </table>
@@ -96,7 +98,7 @@ const SolicitudesPublicasModule = {
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="10" style="text-align: center; padding: 20px;">Consultando Supabase...</td>
+        <td colspan="12" style="text-align: center; padding: 20px;">Consultando Supabase...</td>
       </tr>
     `;
 
@@ -119,7 +121,7 @@ const SolicitudesPublicasModule = {
       if (!data || data.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="10" style="text-align: center; padding: 20px;">Sin solicitudes registradas</td>
+            <td colspan="12" style="text-align: center; padding: 20px;">Sin solicitudes registradas</td>
           </tr>
         `;
         return;
@@ -130,10 +132,9 @@ const SolicitudesPublicasModule = {
           const tipo = item.tipo || "-";
           const nombre = item.nombre || "-";
           const telefono = item.telefono || "-";
-          const vehiculo =
-            [item.marca, item.modelo, item.patente]
-              .filter(Boolean)
-              .join(" / ") || "-";
+          const marca = item.marca || "-";
+          const modelo = item.modelo || "-";
+          const anio = item.anio || "-";
           const detalle = item.mensaje || item.trabajo || item.servicio || "-";
           const fecha = item.created_at
             ? new Date(item.created_at).toLocaleString("es-CL")
@@ -145,12 +146,31 @@ const SolicitudesPublicasModule = {
             const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
             if (match) {
               const [, y, m, d] = match;
-              const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+              const meses = [
+                "ene",
+                "feb",
+                "mar",
+                "abr",
+                "may",
+                "jun",
+                "jul",
+                "ago",
+                "sep",
+                "oct",
+                "nov",
+                "dic",
+              ];
               const dateObj = new Date(Number(y), Number(m) - 1, Number(d));
               const dias = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
               return `${dias[dateObj.getDay()]} ${Number(d)} de ${meses[Number(m) - 1]} ${y}`;
             }
             return raw;
+          })();
+          const horaAgendada = (() => {
+            if (!item.hora_agendada) return "";
+            const raw = String(item.hora_agendada).trim();
+            const match = raw.match(/^(\d{2}:\d{2})/);
+            return match ? `${match[1]} hrs` : raw;
           })();
           const estadoSolicitud = item.estado || "pendiente";
 
@@ -163,9 +183,11 @@ const SolicitudesPublicasModule = {
               </td>
               <td>${nombre}</td>
               <td>${telefono}</td>
-              <td>${vehiculo}</td>
+              <td>${marca}</td>
+              <td>${modelo}</td>
+              <td>${anio}</td>
               <td>${detalle}</td>
-              <td>${fechaAgendada !== "-" ? `<span class="fecha-agendada-badge"><i class="fas fa-calendar-check"></i> ${fechaAgendada}</span>` : "-"}</td>
+              <td>${fechaAgendada !== "-" ? `<span class="fecha-agendada-badge"><i class="fas fa-calendar-check"></i> ${fechaAgendada}${horaAgendada ? ` · ${horaAgendada}` : ""}</span>` : "-"}</td>
               <td>${fecha}</td>
               <td>
                 <div class="estado-actions">
@@ -188,7 +210,7 @@ const SolicitudesPublicasModule = {
     } catch (err) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="10" style="text-align: center; padding: 20px;">No se pudo cargar la información</td>
+          <td colspan="12" style="text-align: center; padding: 20px;">No se pudo cargar la información</td>
         </tr>
       `;
 

@@ -10,7 +10,7 @@ const DashboardModule = {
     return `
             <div class="dashboard-container">
                 <div class="welcome-section">
-                    <h2>Bienvenido al Sistema del Taller</h2>
+                    <h2>Bienvenido al Sistema del Taller Sebastian Gonzalez</h2>
                     <p>Dashboard del taller automotriz - Gestión integral de servicios</p>
                 </div>
 

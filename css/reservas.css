@@ -15,6 +15,10 @@
   max-width: 600px;
 }
 
+.publico-form-container .reserva-form {
+  max-width: 980px;
+}
+
 .reserva-form h2 {
   color: #1a1a1a;
   margin-bottom: 25px;
@@ -88,6 +92,94 @@
   border-radius: 10px;
   overflow: hidden;
   user-select: none;
+}
+
+.agenda-selector {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.horarios-widget {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.horarios-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.horarios-header span {
+  font-weight: 700;
+}
+
+.horarios-header small {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+}
+
+.horarios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 16px;
+}
+
+.horario-slot {
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  color: #1a1a1a;
+  border-radius: 8px;
+  padding: 12px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.horario-slot:hover:not(:disabled) {
+  border-color: #d32f2f;
+  color: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(211, 47, 47, 0.12);
+}
+
+.horario-slot.seleccionado {
+  background: #d32f2f;
+  color: #fff;
+  border-color: #d32f2f;
+}
+
+.horario-slot.ocupado,
+.horario-slot.pasado,
+.horario-slot:disabled {
+  background: #f5f5f5;
+  color: #b0b0b0;
+  border-color: #e5e5e5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.horario-slot.ocupado {
+  background: #ffebee;
+  color: #b71c1c;
+  border-color: #f4b8bd;
+}
+
+.horarios-ayuda {
+  margin: 0;
+  padding: 0 16px 16px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .calendario-header {
@@ -196,6 +288,13 @@
   color: #ccc;
 }
 
+.calendario-dia.ocupado {
+  background: #ffebee;
+  color: #b71c1c;
+  font-weight: 700;
+  border: 1px solid #f4b8bd;
+}
+
 .fecha-seleccionada-texto {
   margin-top: 10px;
   font-size: 14px;
@@ -243,6 +342,14 @@
   .reserva-form {
     padding: 20px;
     max-width: 100%;
+  }
+
+  .agenda-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .horarios-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .calendario-dia {

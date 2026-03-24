@@ -68,3 +68,7 @@ with check (true);
 -- Columna para almacenar la fecha agendada por el usuario público
 alter table public.solicitudes_publicas
 add column if not exists fecha_agendada date;
+
+-- Columna para almacenar la hora agendada por el usuario público
+alter table public.solicitudes_publicas
+add column if not exists hora_agendada time;
