@@ -420,6 +420,7 @@ const PublicoAtencionModule = {
       const today = new Date();
       const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
+      // Cargar solicitudes ya agendadas
       const { data, error } = await client
         .from("solicitudes_publicas")
         .select("*")
@@ -434,6 +435,19 @@ const PublicoAtencionModule = {
       (data ?? []).forEach((item) => {
         this.registerBookedSlot(item.fecha_agendada, item.hora_agendada);
       });
+
+      // Cargar bloqueos del taller (días/horas marcadas como no disponibles por el dueño)
+      const { data: bloqueos, error: errBloqueos } = await client
+        .from("bloqueos_horario")
+        .select("*")
+        .gte("fecha", todayIso);
+
+      if (!errBloqueos && bloqueos) {
+        bloqueos.forEach((bloqueo) => {
+          // hora null = día completo bloqueado
+          this.registerBookedSlot(bloqueo.fecha, bloqueo.hora);
+        });
+      }
 
       this.renderCalendar();
       this.renderTimeSlots();

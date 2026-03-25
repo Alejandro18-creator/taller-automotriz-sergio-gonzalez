@@ -33,7 +33,7 @@ drop constraint if exists solicitudes_publicas_estado_check;
 
 alter table public.solicitudes_publicas
 add constraint solicitudes_publicas_estado_check
-check (estado in ('pendiente', 'en_proceso', 'cerrada'));
+check (estado in ('pendiente', 'en_proceso', 'completada', 'cancelada', 'cerrada'));
 
 alter table public.solicitudes_publicas enable row level security;
 
