@@ -217,7 +217,7 @@ const PublicoAtencionModule = {
     return `
       <div class="publico-form-container">
         <h2><i class="fas fa-headset"></i> Solicitar Atención</h2>
-        <p>Completa este formulario y selecciona un día en el calendario para agendar tu visita.</p>
+        <p>Completa este formulario y selecciona un día en el calendario para agendar tu visita. Tu vehículo tiene algún problema? No te preocupes, estamos aquí para ayudarte. Contacta con nosotros para recibir asesoramiento experto y resolver tus dudas mecánicas 🚗💨</p>
 
         <form id="formAtencionPublica" class="reserva-form">
           <div class="form-group">
