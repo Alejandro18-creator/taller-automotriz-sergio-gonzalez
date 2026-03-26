@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Taller Mecánico</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpeg" href="img/logo.jpg" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -49,6 +50,23 @@
             <span id="modeLabel" class="user-info">
               <i class="fas fa-eye"></i> Vista Pública
             </span>
+            <!-- WhatsApp Contacto -->
+            <a
+              href="https://wa.me/5491123456789"
+              target="_blank"
+              class="whatsapp-link"
+              title="Contáctanos por WhatsApp"
+              style="
+                margin-left: 1rem;
+                font-size: 1.7rem;
+                color: #25d366;
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+              "
+            >
+              <i class="fab fa-whatsapp"></i>
+            </a>
           </div>
         </header>
 
@@ -80,5 +98,44 @@
 
     <!-- Cargar módulos como ES6 -->
     <script type="module" src="js/router.js"></script>
+    <!-- WhatsApp Flotante -->
+    <a
+      href="https://wa.me/56975520550"
+      target="_blank"
+      class="whatsapp-float"
+      title="Contáctanos por WhatsApp"
+    >
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <style>
+      .whatsapp-float {
+        position: fixed;
+        width: 70px;
+        height: 70px;
+        bottom: 30px;
+        right: 30px;
+        background-color: #25d366;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        text-decoration: none;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
+      }
+      .whatsapp-float:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        transform: scale(1.08);
+        color: #fff;
+      }
+      .whatsapp-float i {
+        pointer-events: none;
+      }
+    </style>
   </body>
 </html>
