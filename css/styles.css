@@ -1,261 +1,282 @@
+.resumen-servicio-grande {
+  font-size: 1.37rem;
+}
+/* Estilo para resúmenes destacados en páginas de servicios */
+.resumen-servicio {
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+/* Enlaces de servicios en blanco */
+.servicios-ul a {
+  color: #fff;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.servicios-ul a:hover {
+  color: #ffb300;
+}
+
+/* Mejorar contraste en páginas de resumen */
+.main-content h1,
+.main-content p {
+  color: #fff;
+  text-shadow: 1px 1px 4px #000;
+}
 /* Contenedor de bloques de servicios alineados y de igual altura */
 .servicios-lista {
-    display: flex;
-    flex-direction: row;
-    gap: 2em;
-    justify-content: center;
-    align-items: stretch;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 .servicio-bloque-con-titulo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 350px;
-    min-width: 250px;
-    flex: 1 1 350px;
-    margin: 0;
-}
-.servicio-bloque {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: none;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  font-size: 0.8rem;
+  box-sizing: border-box;
 }
 /* Títulos de bloques de servicios fuera de la caja y centrados */
 .servicio-bloque-con-titulo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2em;
-    width: fit-content;
-    min-width: 250px;
-    max-width: 350px;
-    margin-right: 2em;
-    float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+  width: fit-content;
+  min-width: 220px;
+  max-width: 320px;
+  margin-right: 1em;
+  float: left;
 }
 .servicio-titulo-centrado {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 0.5em;
-    margin-top: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0.5em;
+  margin-top: 0;
 }
 /* Centrar textos en la cabecera de servicios */
 .topbar-services {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-bottom: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 1.5em;
 }
 /* Alinear los textos de modo y vista pública a la derecha */
 .topbar-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5em;
 }
 .mode-switcher {
-    display: flex;
-    gap: 0.5em;
+  display: flex;
+  gap: 0.5em;
 }
 .user-info {
-    text-align: right;
-    width: 100%;
+  text-align: right;
+  width: 100%;
 }
 /* Forzar header en columna para que el texto quede debajo del título */
 .topbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 /* Descripción bajo el título de servicios */
 .servicio-descripcion {
-    color: #fff;
-    margin-top: 0.2em;
-    margin-bottom: 1em;
-    font-size: 1.05rem;
+  color: #fff;
+  margin-top: 0.2em;
+  margin-bottom: 1em;
+  font-size: 1.05rem;
 }
 /* Bloque con borde para la lista de servicios */
 .servicio-bloque {
-    border: 2px solid #d32f2f;
-    border-radius: 10px;
-    padding: 1.5em 1.5em 1em 1.5em;
-    background: rgba(255,255,255,0.03);
-    margin-bottom: 2em;
-    max-width: 350px;
-    min-width: 250px;
-    box-sizing: border-box;
-    display: inline-block;
-    vertical-align: top;
+  border: 2px solid #d32f2f;
+  border-radius: 10px;
+  padding: 1.5em 1.5em 1em 1.5em;
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: 2em;
+  /*max-width: 260px;
+  min-width: 180px;*/
+  min-height: 220px; /* Fuerza altura mínima para igualar bloques */
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  width: 320px;
 }
 /* Título destacado para el primer servicio */
 .servicio-titulo {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin-bottom: 0.5em;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
 /* Estilos para la lista de servicios */
 .servicios-ul {
-    font-size: 1.2rem;
-    line-height: 2;
-    color: #fff;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #fff;
+  min-height: 120px; /* Igualar altura de listas cortas */
+  list-style: none;
+  padding-left: 0;
 }
 
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #B71C1C 100%);
-    color: var(--color-texto);
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #b71c1c 100%);
+  color: var(--color-texto);
 }
 
 .container {
-    padding: 40px;
-    background-color: var(--color-blanco);
-    max-width: 1000px;
-    margin: 60px auto;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 40px;
+  background-color: var(--color-blanco);
+  max-width: 1000px;
+  margin: 60px auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 h1 {
-    color: var(--color-negro);
+  color: var(--color-negro);
 }
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 /* Layout general */
 .layout {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
-    background: linear-gradient(
-        180deg,
-        #111111 0%,
-        #1A1A1A 60%,
-        #8B0000 100%
-    );
-    color: white;
-    padding: 20px;
+  width: 250px;
+  background: linear-gradient(180deg, #111111 0%, #1a1a1a 60%, #8b0000 100%);
+  color: white;
+  padding: 20px;
 }
 
 .logo-area {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .logo-area img {
-    width: 140px;
+  width: 140px;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .sidebar li {
-    padding: 12px 10px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  padding: 12px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .sidebar li:hover {
-    background-color: #D32F2F;
+  background-color: #d32f2f;
 }
 
 /* Área principal */
 .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: transparent;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
 }
 
 /* Área de trabajo */
 .content {
-    flex: 1;
-    padding: 30px;
-    background-color: #E5E5E5;
-    margin: 20px;
-    border-radius: 10px;
+  flex: 1;
+  padding: 30px;
+  background-color: #e5e5e5;
+  margin: 20px;
+  border-radius: 10px;
 }
 
 .topbar {
-    padding: 20px 30px;
-    background-color: #111111;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #8B0000;
+  padding: 20px 30px;
+  background-color: #111111;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #8b0000;
 }
 
 /* Contenedor izquierdo */
 .topbar-left {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Taller Automotriz */
 .brand-name {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: #D32F2F;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #d32f2f;
 }
 
 /* Sergio González */
 .owner-name {
-    font-size: 15px;
-    color: #FFFFFF;
-    margin-top: 4px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    position: relative;
+  font-size: 15px;
+  color: #ffffff;
+  margin-top: 4px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
 }
 
 .owner-name::after {
-    content: "";
-    display: block;
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(90deg, #D32F2F, transparent);
-    margin-top: 6px;
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #d32f2f, transparent);
+  margin-top: 6px;
 }
 
 .topbar h2 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .user-info {
-    font-size: 14px;
-    background-color: #8B0000;
-    padding: 8px 14px;
-    border-radius: 20px;
+  font-size: 14px;
+  background-color: #8b0000;
+  padding: 8px 14px;
+  border-radius: 20px;
 }
 .services {
-    font-size: 30px;
-    color: #D32F2F;
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+  font-size: 30px;
+  color: #d32f2f;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1.5px;
 }
