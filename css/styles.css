@@ -1,3 +1,47 @@
+/* Recuadro especial para Diagnóstico mecánico general */
+.diagnostico-recuadro {
+  border: 3px solid;
+  border-image: linear-gradient(135deg, #0f0f0f 0%, #b71c1c 100%) 1;
+  border-radius: 12px;
+  background: rgba(25, 118, 210, 0.07);
+  padding: 1.2em 1em 1em 1em;
+  margin: 1.2em 0 2em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(25, 118, 210, 0.08);
+}
+
+.diagnostico-texto {
+  color: #0d47a1;
+  font-size: 1.13rem;
+  font-weight: 500;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.diagnostico-imagenes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7em;
+  justify-content: center;
+}
+
+.diagnostico-imagenes img {
+  max-width: 250px;
+  max-height: 210px;
+  border-radius: 8px;
+  border: 2.5px solid;
+  border-image: linear-gradient(135deg, #0f0f0f 0%, #b71c1c 100%) 1;
+  background: #fff;
+  object-fit: cover;
+  box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10);
+  transition: transform 0.2s;
+}
+.diagnostico-imagenes img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.18);
+}
 .resumen-servicio-grande {
   font-size: 1.37rem;
 }
