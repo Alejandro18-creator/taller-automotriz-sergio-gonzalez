@@ -2,6 +2,8 @@
  * RESERVAS - Reservas de Horas
  */
 
+import { supabase } from "../supabase-client.js";
+
 const ReservasModule = {
   name: "reservas",
 
@@ -60,7 +62,9 @@ const ReservasModule = {
                         <textarea name="descripcion" placeholder="Describe el problema o servicio que necesitas" rows="4"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg">Solicitar Hora</button>
+                    <button type="button" id="btnWhatsapp" class="btn btn-primary btn-lg">
+  Agendar por WhatsApp
+</button>
                 </form>
 
                 <div id="mensajeReserva" class="mensaje" style="display: none;"></div>
@@ -83,10 +87,39 @@ const ReservasModule = {
         this.cargarModelos(e.target.value),
       );
     }
+    const btnWhatsapp = document.getElementById("btnWhatsapp");
 
-    if (formReserva) {
-      formReserva.addEventListener("submit", (e) => this.enviarReserva(e));
+    if (btnWhatsapp) {
+      btnWhatsapp.addEventListener("click", async () => {
+        const form = document.getElementById("formReserva");
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        console.log("CLICK REAL", data);
+
+        // 🔥 WhatsApp (esto NO se bloquea)
+        const numero = "56975520550";
+
+        const texto = `Nueva reserva
+Nombre: ${data.nombre}
+Teléfono: ${data.telefono}
+Fecha: ${data.fecha}
+Hora: ${data.hora}`;
+
+        const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+
+        window.open(url, "_blank");
+
+        // 🔹 Guardar en Supabase
+        await supabase.from("reservas").insert([data]);
+      });
     }
+
+    document.addEventListener("submit", (e) => {
+      if (e.target && e.target.id === "formReserva") {
+        this.enviarReserva(e);
+      }
+    });
   },
 
   cargarMarcas() {
@@ -150,14 +183,55 @@ const ReservasModule = {
     }
   },
 
-  enviarReserva(e) {
+  async enviarReserva(e) {
     e.preventDefault();
-    console.log("Reserva enviada");
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    const numero = "56975520550";
+
+    const texto = `Nueva reserva
+Nombre: ${data.nombre}
+Teléfono: ${data.telefono}
+Fecha: ${data.fecha}
+Hora: ${data.hora}`;
+
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+
+    // 🔥 ABRIR WHATSAPP PRIMERO (clave)
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.click();
+
+    // 🔥 DESPUÉS guardar en Supabase
+    const { error } = await supabase.from("reservas").insert([
+      {
+        nombre: data.nombre,
+        telefono: data.telefono,
+        email: data.email,
+        marca: data.marca,
+        modelo: data.modelo,
+        fecha: data.fecha,
+        hora: data.hora,
+        mensaje: data.descripcion || "",
+      },
+    ]);
+
     const mensaje = document.getElementById("mensajeReserva");
-    if (mensaje) {
-      mensaje.textContent =
-        "Tu solicitud de hora ha sido registrada. Nos contactaremos pronto.";
-      mensaje.style.display = "block";
+
+    if (error) {
+      console.error(error);
+      if (mensaje) {
+        mensaje.textContent = "Error al guardar ❌";
+        mensaje.style.display = "block";
+      }
+    } else {
+      if (mensaje) {
+        mensaje.textContent = "Reserva guardada correctamente ✅";
+        mensaje.style.display = "block";
+      }
       e.target.reset();
     }
   },

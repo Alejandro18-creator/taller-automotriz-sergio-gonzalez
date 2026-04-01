@@ -18,3 +18,9 @@ export function getSupabaseClient() {
 
   return null;
 }
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabaseUrl = "https://ocqvpbwqovxprigfwqcc.supabase.co";
+const supabaseKey = "sb_publishable_5LJ8bhujNmgyTRin-gc-ig_X4968E_B";
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
