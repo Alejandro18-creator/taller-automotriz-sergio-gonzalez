@@ -10,11 +10,11 @@ import VehiculosModule from "./modules/vehiculos.js";
 import OrdenesModule from "./modules/ordenes.js";
 import ReportesModule from "./modules/reportes.js";
 import ReservasModule from "./modules/reservas.js";
-import SolicitudesPublicasModule from "./modules/solicitudes-publicas.js";
 import PublicoInicioModule from "./modules/publico-inicio.js";
 import PublicoAtencionModule from "./modules/publico-atencion.js";
 import PublicoCotizacionesModule from "./modules/publico-cotizaciones.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
+import DiagnosticoModule from "./modules/diagnostico.js";
 
 // Registro de módulos disponibles
 const modules = {
@@ -24,11 +24,11 @@ const modules = {
   ordenes: OrdenesModule,
   reportes: ReportesModule,
   reservas: ReservasModule,
-  "solicitudes-publicas": SolicitudesPublicasModule,
   "publico-inicio": PublicoInicioModule,
   "publico-atencion": PublicoAtencionModule,
   "publico-cotizaciones": PublicoCotizacionesModule,
   disponibilidad: DisponibilidadModule,
+  diagnostico: DiagnosticoModule,
 };
 
 const menuByMode = {
@@ -47,11 +47,6 @@ const menuByMode = {
   ],
   taller: [
     { module: "dashboard", icon: "fas fa-chart-line", label: "Dashboard" },
-    {
-      module: "solicitudes-publicas",
-      icon: "fas fa-inbox",
-      label: "Solicitudes Públicas",
-    },
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
     { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },

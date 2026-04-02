@@ -14,15 +14,6 @@
           href="https://wa.me/56975520550?text=Consulte%20ac%C3%A1"
           target="_blank"
           class="whatsapp-link"
-
-          style="
-            margin-top: 1rem;
-            font-size: 2rem;
-            color: #25d366;
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-          "
         >
           <i class="fab fa-whatsapp"></i>
         </a>
@@ -35,8 +26,19 @@
           </li>
           <li data-module="clientes"><i class="fas fa-users"></i> Clientes</li>
           <li data-module="vehiculos"><i class="fas fa-car"></i> Vehículos</li>
-          <li data-module="ordenes">
-            <i class="fas fa-file-invoice"></i> Órdenes
+          <li class="submenu-parent">
+            <div class="submenu-toggle">
+              <i class="fas fa-file-invoice"></i> Órdenes
+              <i class="fas fa-caret-down"></i>
+            </div>
+            <ul class="submenu">
+              <li data-module="ordenes">
+                <i class="fas fa-list"></i> Listado de Órdenes
+              </li>
+              <li data-module="diagnostico">
+                <i class="fas fa-stethoscope"></i> Recepción y Diagnóstico
+              </li>
+            </ul>
           </li>
           <li data-module="reportes">
             <i class="fas fa-chart-bar"></i> Reportes
@@ -46,6 +48,25 @@
           </li>
         </ul>
       </nav>
+      <script>
+        // Submenú interactivo profesional
+        document.addEventListener("DOMContentLoaded", function () {
+          const submenuParent = document.querySelector(".submenu-parent");
+          const submenuToggle = submenuParent.querySelector(".submenu-toggle");
+          submenuToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            submenuParent.classList.toggle("open");
+          });
+          // Cerrar submenú al hacer clic fuera
+          document.addEventListener("click", function (e) {
+            if (!submenuParent.contains(e.target)) {
+              submenuParent.classList.remove("open");
+            }
+          });
+          // Abrir automáticamente al cargar
+          submenuParent.classList.add("open");
+        });
+      </script>
     </aside>
   </body>
 </html>

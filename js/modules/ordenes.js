@@ -117,6 +117,29 @@ const OrdenesModule = {
   },
 
   setupEventListeners() {
+    // Cierre mejorado del modal
+    const modal = document.getElementById("modalOrden");
+    if (modal) {
+      // Cerrar al hacer clic en la X
+      const closeBtn = modal.querySelector(".close");
+      if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+      }
+      // Cerrar al hacer clic fuera del contenido
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+      // Cerrar con Escape
+      document.addEventListener("keydown", (e) => {
+        if (modal.style.display === "block" && e.key === "Escape") {
+          modal.style.display = "none";
+        }
+      });
+    }
     const btnCrear = document.getElementById("btnCrearOrden");
     if (btnCrear) {
       btnCrear.addEventListener("click", () => this.abrirModal());
@@ -162,7 +185,12 @@ const OrdenesModule = {
         return;
       }
 
-      const contadores = { pendiente: 0, en_proceso: 0, completada: 0, cancelada: 0 };
+      const contadores = {
+        pendiente: 0,
+        en_proceso: 0,
+        completada: 0,
+        cancelada: 0,
+      };
 
       (data || []).forEach((item) => {
         const est = item.estado === "cerrada" ? "completada" : item.estado;
@@ -171,10 +199,14 @@ const OrdenesModule = {
         }
       });
 
-      document.getElementById("countPendiente").textContent = contadores.pendiente;
-      document.getElementById("countEnProceso").textContent = contadores.en_proceso;
-      document.getElementById("countCompletada").textContent = contadores.completada;
-      document.getElementById("countCancelada").textContent = contadores.cancelada;
+      document.getElementById("countPendiente").textContent =
+        contadores.pendiente;
+      document.getElementById("countEnProceso").textContent =
+        contadores.en_proceso;
+      document.getElementById("countCompletada").textContent =
+        contadores.completada;
+      document.getElementById("countCancelada").textContent =
+        contadores.cancelada;
     } catch (err) {
       console.error("Error al cargar contadores:", err);
     }
@@ -192,14 +224,15 @@ const OrdenesModule = {
   },
 
   getNormalizedEstado(estado) {
-    return estado === "cerrada" ? "completada" : (estado || "pendiente");
+    return estado === "cerrada" ? "completada" : estado || "pendiente";
   },
 
   getEstadoOptions(estadoActual) {
     const estados = ["pendiente", "en_proceso", "completada", "cancelada"];
     return estados
       .map((e) => {
-        const selected = e === this.getNormalizedEstado(estadoActual) ? "selected" : "";
+        const selected =
+          e === this.getNormalizedEstado(estadoActual) ? "selected" : "";
         return `<option value="${e}" ${selected}>${this.getEstadoTexto(e)}</option>`;
       })
       .join("");
@@ -246,16 +279,31 @@ const OrdenesModule = {
       tbody.innerHTML = data
         .map((orden) => {
           const cliente = orden.nombre || "N/A";
-          const vehiculo = [orden.marca, orden.modelo, orden.patente]
-            .filter(Boolean)
-            .join(" ") || "N/A";
-          const servicio = orden.servicio || orden.trabajo || orden.mensaje || "N/A";
+          const vehiculo =
+            [orden.marca, orden.modelo, orden.patente]
+              .filter(Boolean)
+              .join(" ") || "N/A";
+          const servicio =
+            orden.servicio || orden.trabajo || orden.mensaje || "N/A";
           const fecha = orden.created_at
             ? new Date(orden.created_at).toLocaleDateString("es-CO")
             : "N/A";
           const estadoNorm = this.getNormalizedEstado(orden.estado);
           const estadoClass = `estado-${estadoNorm}`;
-
+          const telefono = orden.telefono
+            ? String(orden.telefono).replace(/[^0-9]/g, "")
+            : "";
+          // Mensaje de confirmación para WhatsApp
+          const mensajeWsp = encodeURIComponent(
+            `Hola ${cliente}, tu reserva en el taller fue aceptada.\n\n` +
+              `Vehículo: ${vehiculo}\n` +
+              `Servicio: ${servicio}\n` +
+              `Fecha: ${fecha}\n` +
+              `¡Te esperamos!`,
+          );
+          const urlWsp = telefono
+            ? `https://wa.me/56${telefono}?text=${mensajeWsp}`
+            : null;
           return `
             <tr>
               <td>#${orden.id}</td>
@@ -272,6 +320,7 @@ const OrdenesModule = {
                   <button class="btn btn-sm btn-primary btn-cambiar-estado" data-id="${orden.id}" title="Guardar estado">
                     <i class="fas fa-save"></i>
                   </button>
+                  ${urlWsp ? `<a href="${urlWsp}" target="_blank" class="btn btn-sm btn-success" title="Confirmar por WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ""}
                 </div>
               </td>
             </tr>
