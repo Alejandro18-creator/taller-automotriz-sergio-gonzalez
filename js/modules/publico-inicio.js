@@ -7,6 +7,9 @@ const PublicoInicioModule = {
 
   render() {
     return `
+      <h3 class="nuestros_serv">
+        <a href="servicios.html" style="color: #8b0000; text-decoration: underline; cursor: pointer;">Nuestros Servicios</a>
+      </h3>
       <div class="publico-container">
         <section class="publico-hero">
           <h2>Bienvenido a Taller Automotriz Sebastian Gonzalez</h2>
@@ -14,7 +17,7 @@ const PublicoInicioModule = {
             Servicio mecánico integral, mantenciones, diagnóstico y reparación.¿Listo para darle el mejor cuidado a tu auto?
             Garantizamos que tu vehículo esté en óptimas condiciones.
             Agenda hoy mismo el servicio que necesita tu auto, desde mantenciones por kilometraje hasta reparaciones generales y más. ¡Confía en nosotros para mantenerlo en su mejor versión!
-            Si quieres cotizar o solicitar atención, usa las opciones del menú público.
+            Si quieres solicitar atención, usa las opciones del menú público.
           </p>
         </section>
 
@@ -34,13 +37,10 @@ const PublicoInicioModule = {
           <article class="publico-card">
             <i class="fas fa-phone"></i>
             <h3>Contacto</h3>
-            <p>Tel: +56 9 68360846<br>Email: contacto@taller.cl</p>
+            <p>Tel: +56 9 68360846<br>Email: Seba.gonzalez.gonzalez5@gmail.com</p>
           </article>
         </section>
       </div>
-      <h3 class="nuestros_serv">
-        <a href="servicios.html" style="color: #8b0000; text-decoration: underline; cursor: pointer;">Nuestros Servicios</a>
-      </h3>
     `;
   },
 

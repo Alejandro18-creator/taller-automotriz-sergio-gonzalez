@@ -4,7 +4,7 @@
  */
 
 // Importar módulos
-import DashboardModule from "./modules/dashboard.js";
+// import DashboardModule from "./modules/dashboard.js";
 import ClientesModule from "./modules/clientes.js";
 import VehiculosModule from "./modules/vehiculos.js";
 import OrdenesModule from "./modules/ordenes.js";
@@ -12,13 +12,13 @@ import ReportesModule from "./modules/reportes.js";
 import ReservasModule from "./modules/reservas.js";
 import PublicoInicioModule from "./modules/publico-inicio.js";
 import PublicoAtencionModule from "./modules/publico-atencion.js";
-import PublicoCotizacionesModule from "./modules/publico-cotizaciones.js";
+// import PublicoCotizacionesModule from "./modules/publico-cotizaciones.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
 import DiagnosticoModule from "./modules/diagnostico.js";
 
 // Registro de módulos disponibles
 const modules = {
-  dashboard: DashboardModule,
+  // dashboard: DashboardModule,
   clientes: ClientesModule,
   vehiculos: VehiculosModule,
   ordenes: OrdenesModule,
@@ -26,7 +26,7 @@ const modules = {
   reservas: ReservasModule,
   "publico-inicio": PublicoInicioModule,
   "publico-atencion": PublicoAtencionModule,
-  "publico-cotizaciones": PublicoCotizacionesModule,
+  // "publico-cotizaciones": PublicoCotizacionesModule,
   disponibilidad: DisponibilidadModule,
   diagnostico: DiagnosticoModule,
 };
@@ -39,14 +39,9 @@ const menuByMode = {
       icon: "fas fa-headset",
       label: "Solicitar Atención",
     },
-    {
-      module: "publico-cotizaciones",
-      icon: "fas fa-file-signature",
-      label: "Cotizaciones",
-    },
+    // Cotizaciones eliminado
   ],
   taller: [
-    { module: "dashboard", icon: "fas fa-chart-line", label: "Dashboard" },
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
     { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },
@@ -61,7 +56,7 @@ const menuByMode = {
 
 const defaultModuleByMode = {
   publico: "publico-inicio",
-  taller: "dashboard",
+  taller: "clientes",
 };
 
 class Router {
