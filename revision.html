@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Revisión Taller</title>
+</head>
+<body>
+
+<h1>Reservas del Taller</h1>
+
+<ul id="lista"></ul>
+
+<script>
+const URL = "https://ocqvpbwqovxprigfwqcc.supabase.co/rest/v1/solicitudes_publicas?apikey=sb_publishable_5LJ8bhujNmgyTRin-gc-ig_X4968E_B";
+
+async function cargarReservas() {
+  const res = await fetch(URL);
+  const data = await res.json();
+
+  const lista = document.getElementById("lista");
+
+  data.forEach(r => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${r.nombre} - ${r.servicio}
+      <button onclick="revisar(${r.id})">Revisar</button>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function revisar(id) {
+  alert("Vas a revisar la solicitud ID: " + id);
+}
+
+cargarReservas();
+</script>
+
+</body>
+</html>

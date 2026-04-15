@@ -15,6 +15,7 @@ import PublicoAtencionModule from "./modules/publico-atencion.js";
 // import PublicoCotizacionesModule from "./modules/publico-cotizaciones.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
 import DiagnosticoModule from "./modules/diagnostico.js";
+import RevisionesModule from "./modules/revisiones.js";
 
 // Registro de módulos disponibles
 const modules = {
@@ -29,6 +30,7 @@ const modules = {
   // "publico-cotizaciones": PublicoCotizacionesModule,
   disponibilidad: DisponibilidadModule,
   diagnostico: DiagnosticoModule,
+  revisiones: RevisionesModule,
 };
 
 const menuByMode = {
@@ -45,6 +47,11 @@ const menuByMode = {
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
     { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },
+    {
+      module: "revisiones",
+      icon: "fas fa-clipboard-list",
+      label: "Revisiones",
+    },
     {
       module: "disponibilidad",
       icon: "fas fa-calendar-xmark",

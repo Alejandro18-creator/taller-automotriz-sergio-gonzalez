@@ -304,9 +304,17 @@ const OrdenesModule = {
           const urlWsp = telefono
             ? `https://wa.me/56${telefono}?text=${mensajeWsp}`
             : null;
+
+          // Botón para mostrar mensaje del cliente
+          const btnMensaje = orden.mensaje
+            ? `<button class="btn btn-xs btn-info btn-ver-mensaje" data-mensaje="${encodeURIComponent(
+                orden.mensaje,
+              )}" title="Ver mensaje del cliente">ver</button>`
+            : "";
+
           return `
             <tr>
-              <td>#${orden.id}</td>
+              <td>#${orden.id} ${btnMensaje}</td>
               <td>${cliente}</td>
               <td>${vehiculo}</td>
               <td>${servicio}</td>
@@ -327,40 +335,18 @@ const OrdenesModule = {
           `;
         })
         .join("");
+
+      // Delegar evento para mostrar mensaje del cliente
+      tbody.querySelectorAll(".btn-ver-mensaje").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const mensaje = decodeURIComponent(btn.getAttribute("data-mensaje"));
+          alert("Mensaje del cliente:\n\n" + mensaje);
+        });
+      });
     } catch (err) {
       console.error("Error al cargar órdenes:", err);
       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#d32f2f;">Error inesperado</td></tr>`;
-    }
-  },
-
-  async cambiarEstado(id, nuevoEstado) {
-    const supabase = getSupabaseClient();
-    if (!supabase) return;
-
-    try {
-      const { error } = await supabase
-        .from("solicitudes_publicas")
-        .update({ estado: nuevoEstado })
-        .eq("id", id);
-
-      if (error) {
-        console.error("Error al cambiar estado:", error);
-        alert("Error al cambiar el estado");
-        return;
-      }
-
-      // Recargar todo
-      this.cargarContadores();
-      this.cargarOrdenes();
-    } catch (err) {
-      console.error("Error al cambiar estado:", err);
-    }
-  },
-
-  abrirModal() {
-    const modal = document.getElementById("modalOrden");
-    if (modal) {
-      modal.style.display = "block";
     }
   },
 
