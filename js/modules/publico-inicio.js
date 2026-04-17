@@ -37,7 +37,7 @@ const PublicoInicioModule = {
           <article class="publico-card">
             <i class="fas fa-phone"></i>
             <h3>Contacto</h3>
-            <p>Tel: +56 9 68360846<br>Email: Seba.gonzalez.gonzalez5@gmail.com</p>
+            <p>Tel: +56 9 68360846<br> Tel: +56 9 37746147<br>Email: Seba.gonzalez.gonzalez5@gmail.com</p>
           </article>
         </section>
       </div>

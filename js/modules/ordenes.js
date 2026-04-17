@@ -1,8 +1,4 @@
-/**
- * ÓRDENES - Gestión de Órdenes de Trabajo
- */
 import { getSupabaseClient } from "../supabase-client.js";
-
 const OrdenesModule = {
   name: "ordenes",
 
@@ -340,14 +336,58 @@ const OrdenesModule = {
       tbody.querySelectorAll(".btn-ver-mensaje").forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
-          const mensaje = decodeURIComponent(btn.getAttribute("data-mensaje"));
-          alert("Mensaje del cliente:\n\n" + mensaje);
+          // Buscar la orden correspondiente por el id
+          const tr = btn.closest("tr");
+          let id = tr && tr.querySelector("td").textContent.match(/#(\d+)/);
+          id = id ? Number(id[1]) : null;
+          const orden = data.find((o) => o.id === id);
+          if (orden) this.mostrarDetalleSolicitud(orden);
         });
       });
     } catch (err) {
       console.error("Error al cargar órdenes:", err);
       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#d32f2f;">Error inesperado</td></tr>`;
     }
+  },
+
+  mostrarDetalleSolicitud(orden) {
+    // Reutiliza el modalOrden para mostrar detalles
+    const modal = document.getElementById("modalOrden");
+    if (!modal) return;
+    const content = modal.querySelector(".modal-content");
+    if (!content) return;
+
+    content.innerHTML = `
+      <span class="close">&times;</span>
+      <h3>Detalle de Solicitud</h3>
+      <div class="detalle-solicitud">
+        <strong>Cliente:</strong> ${orden.nombre || "N/A"}<br>
+        <strong>Teléfono:</strong> ${orden.telefono || "N/A"}<br>
+        <strong>Vehículo:</strong> ${[orden.marca, orden.modelo, orden.patente].filter(Boolean).join(" ") || "N/A"}<br>
+        <strong>Servicio:</strong> ${orden.servicio || orden.trabajo || "N/A"}<br>
+        <strong>Mensaje:</strong> ${orden.mensaje || "-"}<br>
+        <strong>Fecha:</strong> ${orden.created_at ? new Date(orden.created_at).toLocaleString("es-CL") : "N/A"}<br>
+        <strong>Estado:</strong> ${this.getEstadoTexto(orden.estado)}
+      </div>
+    `;
+    modal.style.display = "block";
+    // Cierre del modal
+    const closeBtn = content.querySelector(".close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+    }
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (modal.style.display === "block" && e.key === "Escape") {
+        modal.style.display = "none";
+      }
+    });
   },
 
   destroy() {

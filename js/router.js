@@ -45,7 +45,6 @@ const menuByMode = {
   ],
   taller: [
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
-    { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },
     {
       module: "revisiones",
