@@ -1,3 +1,4 @@
+// This line is added to remove stray characters before the import
 import { getSupabaseClient } from "../supabase-client.js";
 
 const RevisionesModule = {
@@ -5,124 +6,13 @@ const RevisionesModule = {
 
   render() {
     return `
-      <style>
-        .revisiones-container {
-          background: #f5f7fa;
-          border-radius: 14px;
-          box-shadow: 0 2px 16px #0001;
-          padding: 2.5rem 1.5rem 2rem 1.5rem;
-          max-width: 700px;
-          margin: 2.5rem auto;
-          font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        .revisiones-container h2 {
-          color: #263238;
-          font-size: 2rem;
-          margin-bottom: 1.5rem;
-          text-align: center;
-        }
-        .revisiones-list-ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-        .revisiones-list-ul li {
-          background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 1px 6px #0001;
-          margin-bottom: 1.2rem;
-          padding: 1rem 1.2rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.3rem;
-        }
-        .btn-revisar {
-          align-self: flex-end;
-          background: #1976d2;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.4rem 1.1rem;
-          margin-top: 0.5rem;
-          cursor: pointer;
-          font-size: 1rem;
-        }
-        .btn-revisar:hover {
-          background: #0d47a1;
-        }
-      </style>
       <div class="revisiones-container">
         <h2>Revisiones de Vehículos</h2>
         <div id="revisiones-list">
           <p>Cargando reservas...</p>
-        <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #222; }
-        .cotiz-header { display: flex; align-items: center; background: #1976d2; color: #fff; padding: 1.2rem 1rem; border-radius: 10px 10px 0 0; }
-        .cotiz-header img { height: 60px; margin-right: 1.5rem; }
-        .cotiz-title { font-size: 2.1rem; font-weight: bold; letter-spacing: 1px; }
-        .cotiz-info { display: flex; justify-content: space-between; margin: 1.5rem 0 1rem 0; }
-        .cotiz-info-box { background: #f5f7fa; border-radius: 8px; padding: 1rem 1.5rem; min-width: 260px; }
-        .cotiz-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-        .cotiz-table th { background: #1976d2; color: #fff; padding: 0.6rem; font-size: 1rem; }
-        .cotiz-table td { background: #f9f9f9; padding: 0.6rem; border-bottom: 1px solid #e0e0e0; }
-        .cotiz-table tr:last-child td { border-bottom: none; }
-        .cotiz-total { text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 1.5rem; color: #1976d2; }
-        .cotiz-comments { margin-top: 2rem; font-size: 0.98rem; color: #444; }
-        </style>
-      return;
-    }
-    if (!data || data.length === 0) {
-      listDiv.innerHTML = "<p>No hay reservas pendientes.</p>";
-      return;
-    }
-    // Guardar la lista HTML y los datos para volver atrás
-    this._revisionesListaHTML = `<ul class='revisiones-list-ul'>${data
-      .map(
-        (r) => `
-          <li>
-            <b>${r.nombre}</b> - ${r.servicio} <br>
-            <small>${r.marca || ""} ${r.modelo || ""} ${r.patente || ""}</small>
-            <button class="btn-revisar" data-id="${r.id}">Revisar</button>
-          </li>
-        `,
-      )
-      .join("")}</ul>`;
-    listDiv.innerHTML = this._revisionesListaHTML;
-    // Guardar los datos de reservas para el botón Volver
-    this._revisionesData = data;
-
-    // Delegación de eventos para los botones
-    listDiv.querySelectorAll(".btn-revisar").forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        const id = btn.getAttribute("data-id");
-        // Obtener datos de la reserva seleccionada
-        const reserva = data.find((r) => String(r.id) === String(id));
-        // Mostrar solo el formulario de revisión de la reserva seleccionada
-        listDiv.innerHTML = `<div id="form-revision-${id}">${this.renderRevisionForm(reserva)}</div>`;
-        const formDiv = document.getElementById(`form-revision-${id}`);
-        this.setupRevisionForm(formDiv, reserva);
-      });
-    });
-
-    // Delegación de eventos para los botones
-    listDiv.querySelectorAll(".btn-revisar").forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        const id = btn.getAttribute("data-id");
-        // Ocultar otros formularios
-        listDiv
-          .querySelectorAll(".form-revision-container")
-          .forEach((div) => (div.style.display = "none"));
-        // Mostrar el formulario para este ítem
-        const formDiv = document.getElementById(`form-revision-${id}`);
-        if (formDiv) {
-          // Obtener datos de la reserva seleccionada
-          const reserva = data.find((r) => String(r.id) === String(id));
-          formDiv.innerHTML = this.renderRevisionForm(reserva);
-          formDiv.style.display = "block";
-          this.setupRevisionForm(formDiv, reserva);
-        }
-      });
-    });
+        </div>
+      </div>
+    `;
   },
 
   renderRevisionForm(reserva) {
@@ -138,87 +28,7 @@ const RevisionesModule = {
       "Batería",
       "Otros",
     ];
-    // Estilos en línea para visualización inmediata (puedes migrar a CSS luego)
     return `
-      <style>
-        .form-revision-dinamica {
-          background: #fff;
-          border-radius: 10px;
-          box-shadow: 0 2px 12px #0002;
-          padding: 2rem 1.5rem;
-          max-width: 480px;
-          margin: 2rem auto;
-          display: flex;
-          flex-direction: column;
-          gap: 1.2rem;
-        }
-        .form-revision-dinamica h4 {
-          margin-top: 0;
-          margin-bottom: 0.5rem;
-          font-size: 1.2rem;
-          color: #1a237e;
-        }
-        #revision-items-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.7rem;
-        }
-        .revision-item {
-          display: flex;
-          gap: 0.5rem;
-          align-items: center;
-        }
-        .revision-item select, .revision-item input {
-          padding: 0.3rem 0.5rem;
-          border-radius: 5px;
-          border: 1px solid #bdbdbd;
-        }
-        .revision-item input {
-          flex: 1;
-        }
-        .btn-remove-item {
-          background: #e53935;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.3rem 0.7rem;
-          cursor: pointer;
-        }
-        #btn-add-item {
-          background: #1976d2;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.4rem 1rem;
-          margin-top: 0.5rem;
-          cursor: pointer;
-        }
-        .form-revision-dinamica textarea {
-          border-radius: 5px;
-          border: 1px solid #bdbdbd;
-          padding: 0.5rem;
-          width: 100%;
-        }
-        .form-revision-dinamica button[type="submit"] {
-          background: #388e3c;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.5rem 1.2rem;
-          font-weight: bold;
-          margin-top: 0.7rem;
-          cursor: pointer;
-        }
-        #btn-cancelar-revision {
-          background: #757575;
-          color: #fff;
-          border: none;
-          border-radius: 5px;
-          padding: 0.4rem 1rem;
-          margin-left: 0.5rem;
-          cursor: pointer;
-        }
-      </style>
       <form class="form-revision-dinamica">
         <h4>Diagnóstico de vehículo</h4>
         <div style="margin-bottom:0.7rem; color:#333; font-size:1rem;">
@@ -238,7 +48,6 @@ const RevisionesModule = {
             <button type="button" class="btn-remove-repuesto">Quitar</button>
           </div>
         </div>
-        <div style="margin-top:0.7rem; font-weight:bold; color:#1a237e;">Total trabajo: <span id="total-trabajo">$0</span></div>
         <button type="button" id="btn-add-repuesto">Agregar repuesto</button>
 
         <label>Observaciones generales:<br>
@@ -447,8 +256,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #222
 .cotiz-table tr:last-child td { border-bottom: none; }
 .cotiz-total { text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 1.5rem; color: #1976d2; }
 .cotiz-comments { margin-top: 2rem; font-size: 0.98rem; color: #444; }
-          });
-</head><body>
   <div class="cotiz-header">
     <img src="${location.origin}/img/logo.jpg" alt="Logo taller" />
     <div>
@@ -561,6 +368,49 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #222
 
   destroy() {
     // Limpieza si es necesario
+  },
+  // Método requerido por el router SPA
+  async init() {
+    const supabase = getSupabaseClient();
+    const listDiv = document.getElementById("revisiones-list");
+    if (!listDiv) return;
+    listDiv.innerHTML = "<p>Cargando reservas...</p>";
+    // Puedes cambiar el nombre de la tabla según tu estructura
+    const { data: reservas, error } = await supabase
+      .from("solicitudes_publicas")
+      .select("id, nombre, marca, modelo, patente, servicio")
+      .order("created_at", { ascending: false });
+    if (error) {
+      listDiv.innerHTML = '<p style="color:red">Error al cargar reservas</p>';
+      return;
+    }
+    if (!reservas || reservas.length === 0) {
+      listDiv.innerHTML = "<p>No hay reservas para revisar.</p>";
+      return;
+    }
+    this._revisionesListaHTML = reservas
+      .map(
+        (r) => `
+        <div class="reserva-item" style="border:1px solid #ddd; border-radius:7px; margin-bottom:1rem; padding:1rem;">
+          <b>${r.nombre}</b> - <span style="color:#1976d2">${r.servicio || ""}</span><br>
+          <span style="font-size:0.97rem; color:#555;">${r.marca || ""} ${r.modelo || ""} - ${r.patente || ""}</span><br>
+          <button class="btn-revisar" data-id="${r.id}" style="margin-top:0.7rem; background:#1976d2; color:#fff; border:none; border-radius:5px; padding:0.4rem 1rem; cursor:pointer;">Revisar</button>
+        </div>
+      `,
+      )
+      .join("");
+    this._revisionesData = reservas;
+    listDiv.innerHTML = this._revisionesListaHTML;
+    // Enlazar botones de revisar
+    listDiv.querySelectorAll(".btn-revisar").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = btn.getAttribute("data-id");
+        const reserva = reservas.find((r) => String(r.id) === String(id));
+        listDiv.innerHTML = `<div id="form-revision-${id}">${this.renderRevisionForm(reserva)}</div>`;
+        const formDiv = document.getElementById(`form-revision-${id}`);
+        this.setupRevisionForm(formDiv, reserva);
+      });
+    });
   },
 };
 

@@ -1,4 +1,12 @@
-import { getSupabaseClient } from "../supabase-client.js";
+import { db } from "../firebase.js";
+
+import {
+  collection,
+  getDocs,
+  addDoc,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+//import { getSupabaseClient } from "../supabase-client.js";//
 const OrdenesModule = {
   name: "ordenes",
 
@@ -138,7 +146,13 @@ const OrdenesModule = {
     }
     const btnCrear = document.getElementById("btnCrearOrden");
     if (btnCrear) {
-      btnCrear.addEventListener("click", () => this.abrirModal());
+      btnCrear.addEventListener("click", () => {
+        const modal = document.getElementById("modalOrden");
+
+        if (modal) {
+          modal.style.display = "block";
+        }
+      });
     }
 
     const filtroEstado = document.getElementById("filtroEstado");
@@ -164,24 +178,23 @@ const OrdenesModule = {
   },
 
   async cargarContadores() {
-    const supabase = getSupabaseClient();
+    /*const supabase = getSupabaseClient();
     if (!supabase) {
       console.warn("Supabase no disponible para cargar contadores");
       return;
-    }
+    }*/
 
     try {
       // Traer todas las solicitudes y contar por estado
-      const { data, error } = await supabase
+      /*const { data, error } = await supabase
         .from("solicitudes_publicas")
         .select("estado");
 
-      if (error) {
+      /*if (error) {
         console.error("Error al cargar contadores:", error);
         return;
-      }
-
-      const contadores = {
+      }*/
+      /* const contadores = {
         pendiente: 0,
         en_proceso: 0,
         completada: 0,
@@ -202,7 +215,7 @@ const OrdenesModule = {
       document.getElementById("countCompletada").textContent =
         contadores.completada;
       document.getElementById("countCancelada").textContent =
-        contadores.cancelada;
+        contadores.cancelada;*/
     } catch (err) {
       console.error("Error al cargar contadores:", err);
     }
@@ -235,20 +248,36 @@ const OrdenesModule = {
   },
 
   async cargarOrdenes() {
-    const supabase = getSupabaseClient();
+    /*const supabase = getSupabaseClient();
     if (!supabase) {
       console.warn("Supabase no disponible para cargar órdenes");
       return;
-    }
+    }*/
 
     const tbody = document.getElementById("ordenesTableBody");
     if (!tbody) return;
 
     try {
-      let query = supabase
+      /*let query = supabase
         .from("solicitudes_publicas")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false });*/
+      await addDoc(collection(db, "ordenes"), {
+        nombre: "Cliente Prueba",
+        marca: "Toyota",
+        modelo: "Yaris",
+        patente: "ABCD11",
+        servicio: "Cambio de aceite",
+        estado: "pendiente",
+        created_at: new Date().toISOString(),
+      });
+
+      const snapshot = await getDocs(collection(db, "ordenes"));
+
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       const filtro = document.getElementById("filtroEstado");
       if (filtro && filtro.value) {
@@ -259,13 +288,34 @@ const OrdenesModule = {
         }
       }
 
-      const { data, error } = await query;
+      /*const { data, error } = await query;*/
 
-      if (error) {
-        console.error("Error al cargar órdenes:", error);
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#d32f2f;">Error al cargar órdenes</td></tr>`;
+      /*if (error) {
+        console.log("ERROR COMPLETO:");
+        console.log(error);
+
+        console.log("MESSAGE:");
+        console.log(error.message);
+
+        console.log("DETAILS:");
+        console.log(error.details);
+
+        console.log("HINT:");
+        console.log(error.hint);
+
+        console.log("CODE:");
+        console.log(error.code);
+
+        tbody.innerHTML = `
+    <tr>
+      <td colspan="7" style="text-align:center;padding:20px;color:#d32f2f;">
+        Error al cargar órdenes
+      </td>
+    </tr>
+  `;
+
         return;
-      }
+      }*/
 
       if (!data || data.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;">Sin órdenes registradas</td></tr>`;
