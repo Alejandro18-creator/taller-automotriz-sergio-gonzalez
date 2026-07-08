@@ -3,7 +3,15 @@
  * Incluye calendario visual para agendar día de atención
  */
 
-import { getSupabaseClient } from "../supabase-client.js";
+import { db } from "../firebase.js";
+
+import {
+  collection,
+  getDocs,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+//import { getSupabaseClient } from "../supabase-client.js";
 
 const DIAS_SEMANA = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const MESES = [
@@ -236,7 +244,30 @@ const PublicoAtencionModule = {
           </div>
 
           <div class="form-group">
-            <label>Marca del Vehículo *</label>
+  <label>Marca del Vehículo *</label>
+
+  <select name="marca" id="atencionMarca" required>
+    <option value="">Seleccione una marca</option>
+
+    ${MARCAS_VEHICULO.map((marca) =>
+      `<option value="${marca}">${marca}</option>`
+    ).join("")}
+
+  </select>
+</div>
+
+<div class="form-group">
+  <label>Patente del Vehículo *</label>
+
+  <input
+    type="text"
+    name="patente"
+    id="atencionPatente"
+    class="form-control"
+    placeholder="ABCD12"
+    required
+  >
+</div>
             <select name="marca" id="atencionMarca" required>
               <option value="">Seleccione una marca</option>
               ${MARCAS_VEHICULO.map((marca) => `<option value="${marca}">${marca}</option>`).join("")}
@@ -414,44 +445,55 @@ const PublicoAtencionModule = {
   /** Carga fechas ya utilizadas para deshabilitarlas en el calendario */
   async loadBookedDates() {
     try {
-      const client = getSupabaseClient();
-      if (!client) return;
+     /* const client = getSupabaseClient();
+      if (!client) return;*/
 
       const today = new Date();
       const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
       // Cargar solicitudes ya agendadas
+      /*
       const { data, error } = await client
         .from("solicitudes_publicas")
         .select("*")
         .eq("tipo", "atencion")
         .not("fecha_agendada", "is", null)
         .gte("fecha_agendada", todayIso);
-
-      if (error) throw error;
+*/
+      /*if (error) throw error;*/
 
       this.bookedSlots = new Map();
 
-      (data ?? []).forEach((item) => {
+      const snapshot = await getDocs(
+  collection(db, "solicitudes_publicas")
+);
+
+const data = snapshot.docs.map((doc) => ({
+  id: doc.id,
+  ...doc.data(),
+}));
+
+data.forEach((item) => {
         this.registerBookedSlot(item.fecha_agendada, item.hora_agendada);
       });
 
       // Cargar bloqueos del taller (días/horas marcadas como no disponibles por el dueño)
-      const { data: bloqueos, error: errBloqueos } = await client
+      /*const { data: bloqueos, error: errBloqueos } = await client
         .from("bloqueos_horario")
         .select("*")
-        .gte("fecha", todayIso);
+        .gte("fecha", todayIso);*/
 
-      if (!errBloqueos && bloqueos) {
+      /*if (!errBloqueos && bloqueos) {
         bloqueos.forEach((bloqueo) => {
           // hora null = día completo bloqueado
           this.registerBookedSlot(bloqueo.fecha, bloqueo.hora);
         });
-      }
+      }*/
 
       this.renderCalendar();
       this.renderTimeSlots();
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("No se pudieron cargar fechas reservadas:", err);
     }
   },
@@ -574,88 +616,149 @@ const PublicoAtencionModule = {
   async onSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
+
     const mensaje = document.getElementById("mensajeAtencion");
 
-    // Validar que se haya seleccionado fecha
+    // Validar fecha
     const fechaAgendada = formData.get("fecha_agendada");
-    const horaAgendada = this.normalizeTimeValue(formData.get("hora_agendada"));
+
+    const horaAgendada = this.normalizeTimeValue(
+      formData.get("hora_agendada")
+    );
+
     if (!fechaAgendada) {
+
       if (mensaje) {
-        mensaje.textContent = "Por favor selecciona un día en el calendario.";
+        mensaje.textContent =
+          "Por favor selecciona un día en el calendario.";
+
         mensaje.className = "mensaje mensaje-error";
         mensaje.style.display = "block";
       }
-      document
-        .getElementById("calendarioWidget")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
       return;
     }
 
+    // Validar hora
     if (!horaAgendada) {
+
       if (mensaje) {
         mensaje.textContent =
-          "Por favor selecciona una hora disponible para la reserva.";
+          "Por favor selecciona una hora disponible.";
+
         mensaje.className = "mensaje mensaje-error";
         mensaje.style.display = "block";
       }
-      document
-        .getElementById("horariosGrid")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
       return;
     }
 
     try {
-      const client = getSupabaseClient();
-      if (!client) {
-        throw new Error(
-          "Supabase no está disponible. Recarga la página e intenta de nuevo",
-        );
-      }
 
-      const payload = {
-        tipo: "atencion",
+      const snapshot = await getDocs(
+  collection(db, "solicitudes_publicas")
+);
+
+const correlativo = snapshot.size + 1;
+
+const folio = `AT-${String(correlativo).padStart(6, "0")}`;
+
+const payload = {
+
+  folio: folio,
+
+  tipo: "atencion",
+  estado: "pendiente",
+
         nombre: formData.get("nombre"),
         telefono: formData.get("telefono"),
         email: formData.get("email"),
+
         marca: formData.get("marca") || null,
+
+        patente: formData.get("patente").toUpperCase().trim(),
+
+        patente: formData.get("patente"),
+
         modelo: formData.get("modelo") || null,
+
         anio: Number(formData.get("anio")) || null,
+
         servicio: formData.get("servicio"),
+
         mensaje: formData.get("mensaje"),
+
         fecha_agendada: fechaAgendada,
         hora_agendada: horaAgendada,
+
+        created_at: new Date().toISOString(),
       };
 
-      const { data, error } = await client
-        .from("solicitudes_publicas")
-        .insert(payload)
-        .select("id")
-        .single();
+      // Guardar en Firebase
+      const docRef = await addDoc(
+        collection(db, "solicitudes_publicas"),
+        payload
+      );
 
-      if (error) {
-        throw error;
-      }
+      console.log("Solicitud guardada:", docRef.id);
 
+      // Mensaje éxito
       if (mensaje) {
+
         const [y, m, d] = fechaAgendada.split("-");
-        mensaje.innerHTML = `<i class="fas fa-check-circle"></i> Solicitud enviada correctamente. Folio <strong>#${data?.id ?? "N/A"}</strong> — Agendado para el <strong>${d}/${m}/${y}</strong> a las <strong>${horaAgendada} hrs</strong>`;
+
+        mensaje.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        Solicitud enviada correctamente.
+        <br>
+        Fecha:
+        <strong>${d}/${m}/${y}</strong>
+        <br>
+        Hora:
+        <strong>${horaAgendada} hrs</strong>
+      `;
+
         mensaje.className = "mensaje mensaje-exito";
         mensaje.style.display = "block";
       }
 
+      // Limpiar formulario
       event.target.reset();
+
+      // Reiniciar calendario
       this.updateModelOptions("");
-      this.registerBookedSlot(fechaAgendada, horaAgendada);
+
+      this.registerBookedSlot(
+        fechaAgendada,
+        horaAgendada
+      );
+
       this.selectedDate = null;
       this.selectedTime = null;
-      const horaInput = document.getElementById("horaAgendadaInput");
-      if (horaInput) horaInput.value = "";
+
+      const horaInput =
+        document.getElementById("horaAgendadaInput");
+
+      if (horaInput) {
+        horaInput.value = "";
+      }
+
       this.renderCalendar();
       this.renderTimeSlots();
       this.updateSelectionText();
+
     } catch (err) {
+
+      console.error(err);
+
       if (mensaje) {
-        mensaje.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se pudo enviar la solicitud: ${err.message}`;
+
+        mensaje.innerHTML = `
+        <i class="fas fa-exclamation-triangle"></i>
+        No se pudo enviar la solicitud:
+        ${err.message}
+      `;
+
         mensaje.className = "mensaje mensaje-error";
         mensaje.style.display = "block";
       }

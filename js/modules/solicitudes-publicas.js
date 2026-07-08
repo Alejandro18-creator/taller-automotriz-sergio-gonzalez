@@ -1,8 +1,15 @@
 /**
- * SOLICITUDES PUBLICAS - Vista interna para el taller
+ * SOLICITUDES DE ATENCION - Vista interna para el taller
  */
 
-import { getSupabaseClient } from "../supabase-client.js";
+import { db } from "../firebase.js";
+
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const SolicitudesPublicasModule = {
   name: "solicitudes-publicas",
@@ -11,14 +18,14 @@ const SolicitudesPublicasModule = {
     return `
       <div class="solicitudes-container">
         <div class="solicitudes-header">
-          <h2>Solicitudes Públicas</h2>
+          <h2>Solicitudes de Atencion</h2>
           <button id="btnRecargarSolicitudes" class="btn btn-secondary">
             <i class="fas fa-rotate"></i> Recargar
           </button>
         </div>
 
         <p class="solicitudes-info">
-          Aquí llegan las solicitudes enviadas desde Atención y Cotizaciones (vista pública).
+          Aquí llegan las solicitudes enviadas desde Atención (vista pública).
         </p>
 
         <div id="solicitudesEstado" class="mensaje" style="display: none;"></div>
@@ -27,8 +34,6 @@ const SolicitudesPublicasModule = {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Tipo</th>
-              <th>Estado</th>
               <th>Nombre</th>
               <th>Teléfono</th>
               <th>Marca</th>
@@ -42,7 +47,7 @@ const SolicitudesPublicasModule = {
           </thead>
           <tbody id="solicitudesBody">
             <tr>
-              <td colspan="12" style="text-align: center; padding: 20px;">Cargando solicitudes...</td>
+              <td colspan="10" style="text-align: center; padding: 20px;">Cargando solicitudes...</td>
             </tr>
           </tbody>
         </table>
@@ -69,14 +74,35 @@ const SolicitudesPublicasModule = {
   },
 
   getEstadoLabel(estado) {
-    if (estado === "en_proceso") {
-      return "En Proceso";
-    }
-    if (estado === "cerrada") {
-      return "Cerrada";
-    }
-    return "Pendiente";
-  },
+
+  switch (estado) {
+
+    case "pendiente":
+      return "Pendiente";
+
+    case "esperando_vehiculo":
+      return "Esperando Vehículo";
+
+    case "diagnostico":
+      return "Diagnóstico";
+
+    case "cotizacion":
+      return "Cotización";
+
+    case "reparacion":
+      return "Reparación";
+
+    case "terminado":
+      return "Terminado";
+
+    case "entregado":
+      return "Entregado";
+
+    default:
+      return estado;
+  }
+
+},
 
   getEstadoOptions(estadoActual) {
     const estados = ["pendiente", "en_proceso", "cerrada"];
@@ -98,30 +124,30 @@ const SolicitudesPublicasModule = {
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="12" style="text-align: center; padding: 20px;">Consultando Supabase...</td>
-      </tr>
+        <td colspan="10" style="text-align: center; padding: 20px;">Cargando solicitudes...
     `;
 
     try {
+      /*
       const client = getSupabaseClient();
       if (!client) {
         throw new Error("Cliente de Supabase no inicializado");
       }
+      */
+      const snapshot = await getDocs(
+  collection(db, "solicitudes_publicas")
+);
 
-      const { data, error } = await client
-        .from("solicitudes_publicas")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(100);
+const data = snapshot.docs.map((doc) => ({
+  id: doc.id,
+  ...doc.data(),
+}));
 
-      if (error) {
-        throw error;
-      }
 
       if (!data || data.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="12" style="text-align: center; padding: 20px;">Sin solicitudes registradas</td>
+            <td colspan="10" style="text-align: center; padding: 20px;">Sin solicitudes registradas</td>
           </tr>
         `;
         return;
@@ -129,7 +155,6 @@ const SolicitudesPublicasModule = {
 
       tbody.innerHTML = data
         .map((item) => {
-          const tipo = item.tipo || "-";
           const nombre = item.nombre || "-";
           const telefono = item.telefono || "-";
           const marca = item.marca || "-";
@@ -176,11 +201,7 @@ const SolicitudesPublicasModule = {
 
           return `
             <tr>
-              <td>${item.id ?? "-"}</td>
-              <td>${tipo}</td>
-              <td>
-                <span class="estado-chip estado-${estadoSolicitud}">${this.getEstadoLabel(estadoSolicitud)}</span>
-              </td>
+              <td>${item.folio ?? item.id}</td>
               <td>${nombre}</td>
               <td>${telefono}</td>
               <td>${marca}</td>
@@ -195,8 +216,8 @@ const SolicitudesPublicasModule = {
                     ${this.getEstadoOptions(estadoSolicitud)}
                   </select>
                   <button class="btn btn-secondary btn-sm btn-guardar-estado" data-id="${item.id}">
-                    Guardar
-                  </button>
+  Aceptar
+</button>
                 </div>
               </td>
             </tr>
@@ -210,7 +231,7 @@ const SolicitudesPublicasModule = {
     } catch (err) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="12" style="text-align: center; padding: 20px;">No se pudo cargar la información</td>
+          <td colspan="10" style="text-align: center; padding: 20px;">No se pudo cargar la información</td>
         </tr>
       `;
 
@@ -222,17 +243,24 @@ const SolicitudesPublicasModule = {
   },
 
   async handleTableClick(event) {
-    const target = event.target;
-    const isSaveButton = target.classList.contains("btn-guardar-estado");
+  const target =
+    event.target.closest(".btn-guardar-estado");
 
-    if (!isSaveButton) {
-      return;
-    }
+  if (!target) {
+    return;
+  }
 
-    const id = Number(target.dataset.id);
-    const row = target.closest("tr");
-    const estadoSelect = row ? row.querySelector(".estado-select") : null;
-    const nuevoEstado = estadoSelect ? estadoSelect.value : null;
+  console.log("CLICK ACEPTAR");
+
+  const id = target.dataset.id;
+
+  const row = target.closest("tr");
+
+  const estadoSelect =
+    row ? row.querySelector(".estado-select") : null;
+
+  const nuevoEstado =
+    estadoSelect ? estadoSelect.value : null;
 
     if (!id || !nuevoEstado) {
       return;
@@ -241,11 +269,20 @@ const SolicitudesPublicasModule = {
     const estadoMensaje = document.getElementById("solicitudesEstado");
 
     try {
+
+      const solicitudRef = doc(db, "solicitudes_publicas", id);
+
+await updateDoc(solicitudRef, {
+  estado: "esperando_vehiculo",
+});
+
+      /*
       const client = getSupabaseClient();
       if (!client) {
         throw new Error("Cliente de Supabase no inicializado");
       }
-
+        */
+    /*
       const { error } = await client
         .from("solicitudes_publicas")
         .update({ estado: nuevoEstado })
@@ -254,13 +291,41 @@ const SolicitudesPublicasModule = {
       if (error) {
         throw error;
       }
+      */
+      target.textContent = "Ingresar Vehículo";
+      this.cargarSolicitudes();
+      
+
+target.textContent = "OT Creada";
+
+target.disabled = true;
+
+target.classList.remove("btn-secondary");
+
+target.classList.add("btn-success");
+
+window.otDraft = {
+  cliente: row.children[1].textContent,
+  telefono: row.children[2].textContent,
+  vehiculo:
+    row.children[3].textContent +
+    " " +
+    row.children[4].textContent,
+};
+
+window.router.navigate("ordenes-trabajo");
+
+target.classList.remove("btn-secondary");
+
+target.classList.add("btn-success");
 
       if (estadoMensaje) {
         estadoMensaje.textContent = `Estado actualizado correctamente para solicitud #${id}.`;
         estadoMensaje.style.display = "block";
       }
 
-      this.cargarSolicitudes();
+     /* this.cargarSolicitudes();*/
+
     } catch (err) {
       if (estadoMensaje) {
         estadoMensaje.textContent = `No se pudo actualizar el estado: ${err.message}`;

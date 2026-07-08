@@ -6,6 +6,7 @@
 // Importar módulos
 import DashboardModule from "./modules/dashboard.js";
 import ClientesModule from "./modules/clientes.js";
+import OrdenesTrabajoModule from "./modules/ordenes-trabajo.js";
 import VehiculosModule from "./modules/vehiculos.js";
 import OrdenesModule from "./modules/ordenes.js";
 import ReportesModule from "./modules/reportes.js";
@@ -13,13 +14,13 @@ import ReservasModule from "./modules/reservas.js";
 import SolicitudesPublicasModule from "./modules/solicitudes-publicas.js";
 import PublicoInicioModule from "./modules/publico-inicio.js";
 import PublicoAtencionModule from "./modules/publico-atencion.js";
-import PublicoCotizacionesModule from "./modules/publico-cotizaciones.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
 
 // Registro de módulos disponibles
 const modules = {
   dashboard: DashboardModule,
   clientes: ClientesModule,
+  "ordenes-trabajo": OrdenesTrabajoModule,
   vehiculos: VehiculosModule,
   ordenes: OrdenesModule,
   reportes: ReportesModule,
@@ -27,7 +28,6 @@ const modules = {
   "solicitudes-publicas": SolicitudesPublicasModule,
   "publico-inicio": PublicoInicioModule,
   "publico-atencion": PublicoAtencionModule,
-  "publico-cotizaciones": PublicoCotizacionesModule,
   disponibilidad: DisponibilidadModule,
 };
 
@@ -39,19 +39,16 @@ const menuByMode = {
       icon: "fas fa-headset",
       label: "Solicitar Atención",
     },
-    {
-      module: "publico-cotizaciones",
-      icon: "fas fa-file-signature",
-      label: "Cotizaciones",
-    },
   ],
   taller: [
     { module: "dashboard", icon: "fas fa-chart-line", label: "Dashboard" },
     {
-      module: "solicitudes-publicas",
-      icon: "fas fa-inbox",
-      label: "Solicitudes Públicas",
-    },
+      module: "solicitudes-publicas", icon: "fas fa-inbox", label: "Solicitudes de Atencion",},
+      {
+  module: "ordenes-trabajo",
+  icon: "fas fa-screwdriver-wrench",
+  label: "OT",
+},
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
     { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },
@@ -60,6 +57,7 @@ const menuByMode = {
       icon: "fas fa-calendar-xmark",
       label: "Disponibilidad",
     },
+    
     { module: "reportes", icon: "fas fa-chart-bar", label: "Reportes" },
   ],
 };
@@ -160,7 +158,7 @@ class Router {
       if (this.currentMode === "publico") {
         this.modeLabel.textContent = "Vista Pública";
         this.modeDescription.textContent =
-          "Información, atención y cotizaciones para clientes";
+          "Información y atención para clientes";
       } else {
         this.modeLabel.textContent = "Vista Taller";
         this.modeDescription.textContent = "Gestión interna del taller";
@@ -222,6 +220,8 @@ class Router {
 
 // Exportar instancia del router
 const router = new Router();
+
+window.router = router;
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {

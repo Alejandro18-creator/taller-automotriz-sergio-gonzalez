@@ -366,7 +366,7 @@ const DisponibilidadModule = {
       const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
       // Cargar bloqueos del dueño
-      const { data, error } = await supabase
+      /*const { data, error } = await supabase
         .from("bloqueos_horario")
         .select("*")
         .gte("fecha", todayIso)
@@ -374,6 +374,9 @@ const DisponibilidadModule = {
         .order("hora", { ascending: true });
 
       if (error) throw error;
+      */
+      const data = [];
+
       this.bloqueos = data || [];
 
       // Cargar reservas de clientes (solicitudes con fecha agendada)

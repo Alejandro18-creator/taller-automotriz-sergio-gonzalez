@@ -14,7 +14,7 @@ const PublicoInicioModule = {
             Servicio mecánico integral, mantenciones, diagnóstico y reparación.¿Listo para darle el mejor cuidado a tu auto?
             Garantizamos que tu vehículo esté en óptimas condiciones.
             Agenda hoy mismo el servicio que necesita tu auto, desde mantenciones por kilometraje hasta reparaciones generales y más. ¡Confía en nosotros para mantenerlo en su mejor versión!
-            Si quieres cotizar o solicitar atención, usa las opciones del menú público.
+            Si quieres solicitar atención, usa las opciones del menú público.
           </p>
         </section>
 
