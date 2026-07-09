@@ -15,6 +15,7 @@ import SolicitudesPublicasModule from "./modules/solicitudes-publicas.js";
 import PublicoInicioModule from "./modules/publico-inicio.js";
 import PublicoAtencionModule from "./modules/publico-atencion.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
+import OrdenesCreadasModule from "./modules/ordenes-creadas.js";
 
 // Registro de módulos disponibles
 const modules = {
@@ -28,6 +29,7 @@ const modules = {
   "solicitudes-publicas": SolicitudesPublicasModule,
   "publico-inicio": PublicoInicioModule,
   "publico-atencion": PublicoAtencionModule,
+  "ordenes-creadas": OrdenesCreadasModule,
   disponibilidad: DisponibilidadModule,
 };
 
@@ -43,12 +45,22 @@ const menuByMode = {
   taller: [
     { module: "dashboard", icon: "fas fa-chart-line", label: "Dashboard" },
     {
-      module: "solicitudes-publicas", icon: "fas fa-inbox", label: "Solicitudes de Atencion",},
-      {
-  module: "ordenes-trabajo",
-  icon: "fas fa-screwdriver-wrench",
-  label: "OT",
-},
+      module: "solicitudes-publicas",
+      icon: "fas fa-inbox",
+      label: "Solicitudes de Atencion",
+    },
+    {
+      module: "ordenes-trabajo",
+      icon: "fas fa-plus-circle",
+      label: "Nueva OT",
+    },
+
+    {
+      module: "ordenes-creadas",
+      icon: "fas fa-clipboard-list",
+      label: "OT Creadas",
+    },
+
     { module: "clientes", icon: "fas fa-users", label: "Clientes" },
     { module: "vehiculos", icon: "fas fa-car", label: "Vehículos" },
     { module: "ordenes", icon: "fas fa-file-invoice", label: "Órdenes" },
@@ -57,7 +69,7 @@ const menuByMode = {
       icon: "fas fa-calendar-xmark",
       label: "Disponibilidad",
     },
-    
+
     { module: "reportes", icon: "fas fa-chart-bar", label: "Reportes" },
   ],
 };

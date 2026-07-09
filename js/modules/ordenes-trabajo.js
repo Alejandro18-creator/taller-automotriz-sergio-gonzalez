@@ -1,9 +1,16 @@
-const OrdenesTrabajoModule = {
+import { db } from "../firebase.js";
 
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const OrdenesTrabajoModule = {
   name: "ordenes-trabajo",
 
   render() {
-
     return `
 
       <div class="ordenes-container">
@@ -67,45 +74,94 @@ const OrdenesTrabajoModule = {
   },
 
   init() {
+    console.log("Órdenes de Trabajo inicializado");
 
-  console.log("Órdenes de Trabajo inicializado");
+    if (window.otDraft) {
+      const cliente = document.getElementById("otCliente");
 
-  if (window.otDraft) {
+      const telefono = document.getElementById("otTelefono");
 
-    const cliente =
-      document.getElementById("otCliente");
+      const vehiculo = document.getElementById("otVehiculo");
 
-    const telefono =
-      document.getElementById("otTelefono");
+      const patente = document.getElementById("otPatente");
 
-    const vehiculo =
-      document.getElementById("otVehiculo");
+      if (cliente) {
+        cliente.value = window.otDraft.cliente || "";
+      }
 
-    const patente =
-      document.getElementById("otPatente");
+      if (telefono) {
+        telefono.value = window.otDraft.telefono || "";
+      }
 
-    if (cliente) {
-      cliente.value = window.otDraft.cliente || "";
+      if (vehiculo) {
+        vehiculo.value = window.otDraft.vehiculo || "";
+      }
+
+      if (patente) {
+        patente.value = window.otDraft.patente || "";
+      }
+
+      const form = document.getElementById("formOT");
+
+      if (form) {
+        form.addEventListener("submit", (e) => this.crearOT(e));
+      }
     }
+  },
 
-    if (telefono) {
-      telefono.value = window.otDraft.telefono || "";
+  async crearOT(event) {
+    event.preventDefault();
+
+    const payload = {
+      cliente: document.getElementById("otCliente").value,
+
+      telefono: document.getElementById("otTelefono").value,
+
+      vehiculo: document.getElementById("otVehiculo").value,
+
+      patente: document.getElementById("otPatente").value.toUpperCase(),
+
+      kilometraje: Number(document.getElementById("otKilometraje").value) || 0,
+
+      diagnostico: document.getElementById("otDiagnostico").value,
+
+      estado: "diagnostico",
+
+      created_at: new Date().toISOString(),
+    };
+
+    try {
+      const docRef = await addDoc(collection(db, "ordenes_trabajo"), payload);
+
+      console.log("OT creada:", docRef.id);
+
+      if (window.otDraft?.solicitudId) {
+
+  await updateDoc(
+    doc(
+      db,
+      "solicitudes_publicas",
+      window.otDraft.solicitudId
+    ),
+    {
+      otId: docRef.id,
+      estado: "diagnostico",
+      updated_at: new Date().toISOString(),
     }
+  );
 
-    if (vehiculo) {
-      vehiculo.value = window.otDraft.vehiculo || "";
+}
+
+
+      alert("OT creada correctamente");
+    } catch (err) {
+      console.error(err);
+
+      alert("Error al crear la OT");
     }
-
-    if (patente) {
-      patente.value = window.otDraft.patente || "";
-    }
-
-  }
-
-},
+  },
 
   destroy() {},
-
 };
 
 export default OrdenesTrabajoModule;

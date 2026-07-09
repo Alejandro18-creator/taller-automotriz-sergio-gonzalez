@@ -8,7 +8,8 @@ import {
   collection,
   getDocs,
   doc,
-  updateDoc
+  updateDoc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const SolicitudesPublicasModule = {
@@ -17,12 +18,24 @@ const SolicitudesPublicasModule = {
   render() {
     return `
       <div class="solicitudes-container">
-        <div class="solicitudes-header">
-          <h2>Solicitudes de Atencion</h2>
-          <button id="btnRecargarSolicitudes" class="btn btn-secondary">
-            <i class="fas fa-rotate"></i> Recargar
-          </button>
-        </div>
+      
+  <div class="solicitudes-header">
+
+    <h2>Solicitudes de Atencion</h2>
+
+    <div>
+
+      <button id="btnBorrarTodo" class="btn btn-danger">
+        🗑 Borrar Todo
+      </button>
+
+      <button id="btnRecargarSolicitudes" class="btn btn-secondary">
+        <i class="fas fa-rotate"></i> Recargar
+      </button>
+
+    </div>
+
+  </div>
 
         <p class="solicitudes-info">
           Aquí llegan las solicitudes enviadas desde Atención (vista pública).
@@ -58,6 +71,9 @@ const SolicitudesPublicasModule = {
 
   init() {
     const recargarBtn = document.getElementById("btnRecargarSolicitudes");
+
+    const borrarBtn = document.getElementById("btnBorrarTodo");
+
     const tabla = document.getElementById("solicitudesBody");
 
     this.onRecargar = () => this.cargarSolicitudes();
@@ -65,6 +81,10 @@ const SolicitudesPublicasModule = {
 
     if (recargarBtn) {
       recargarBtn.addEventListener("click", this.onRecargar);
+    }
+
+    if (borrarBtn) {
+      borrarBtn.addEventListener("click", () => this.borrarTodo());
     }
 
     if (tabla) {
@@ -75,35 +95,32 @@ const SolicitudesPublicasModule = {
   },
 
   getEstadoLabel(estado) {
+    switch (estado) {
+      case "pendiente":
+        return "Pendiente";
 
-  switch (estado) {
+      case "esperando_vehiculo":
+        return "Esperando Vehículo";
 
-    case "pendiente":
-      return "Pendiente";
+      case "diagnostico":
+        return "Diagnóstico";
 
-    case "esperando_vehiculo":
-      return "Esperando Vehículo";
+      case "cotizacion":
+        return "Cotización";
 
-    case "diagnostico":
-      return "Diagnóstico";
+      case "reparacion":
+        return "Reparación";
 
-    case "cotizacion":
-      return "Cotización";
+      case "terminado":
+        return "Terminado";
 
-    case "reparacion":
-      return "Reparación";
+      case "entregado":
+        return "Entregado";
 
-    case "terminado":
-      return "Terminado";
-
-    case "entregado":
-      return "Entregado";
-
-    default:
-      return estado;
-  }
-
-},
+      default:
+        return estado;
+    }
+  },
 
   getEstadoOptions(estadoActual) {
     const estados = ["pendiente", "en_proceso", "cerrada"];
@@ -135,15 +152,12 @@ const SolicitudesPublicasModule = {
         throw new Error("Cliente de Supabase no inicializado");
       }
       */
-      const snapshot = await getDocs(
-  collection(db, "solicitudes_publicas")
-);
+      const snapshot = await getDocs(collection(db, "solicitudes_publicas"));
 
-const data = snapshot.docs.map((doc) => ({
-  id: doc.id,
-  ...doc.data(),
-}));
-
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       if (!data || data.length === 0) {
         tbody.innerHTML = `
@@ -222,12 +236,12 @@ const data = snapshot.docs.map((doc) => ({
                   class="btn btn-secondary btn-sm btn-guardar-estado"
                     data-id="${item.id}">
                     ${
-                    estadoSolicitud === "pendiente"
-                      ? "Aceptar"
-                      : estadoSolicitud === "esperando_vehiculo"
-                        ? "Ingresar Vehículo"
-                        : "Ver OT"
-                  }
+                      estadoSolicitud === "pendiente"
+                        ? "Aceptar"
+                        : estadoSolicitud === "esperando_vehiculo"
+                          ? "Ingresar Vehículo"
+                          : "Ver OT"
+                    }
                   </button>
                 </div>
               </td>
@@ -254,24 +268,21 @@ const data = snapshot.docs.map((doc) => ({
   },
 
   async handleTableClick(event) {
-  const target =
-    event.target.closest(".btn-guardar-estado");
+    const target = event.target.closest(".btn-guardar-estado");
 
-  if (!target) {
-    return;
-  }
+    if (!target) {
+      return;
+    }
 
-  console.log("CLICK ACEPTAR");
+    console.log("CLICK ACEPTAR");
 
-  const id = target.dataset.id;
+    const id = target.dataset.id;
 
-  const row = target.closest("tr");
+    const row = target.closest("tr");
 
-  const estadoSelect =
-    row ? row.querySelector(".estado-select") : null;
+    const estadoSelect = row ? row.querySelector(".estado-select") : null;
 
-  const nuevoEstado =
-    estadoSelect ? estadoSelect.value : null;
+    const nuevoEstado = estadoSelect ? estadoSelect.value : null;
 
     if (!id || !nuevoEstado) {
       return;
@@ -280,12 +291,11 @@ const data = snapshot.docs.map((doc) => ({
     const estadoMensaje = document.getElementById("solicitudesEstado");
 
     try {
-
       const solicitudRef = doc(db, "solicitudes_publicas", id);
 
-await updateDoc(solicitudRef, {
-  estado: "esperando_vehiculo",
-});
+      await updateDoc(solicitudRef, {
+        estado: "esperando_vehiculo",
+      });
 
       /*
       const client = getSupabaseClient();
@@ -293,7 +303,7 @@ await updateDoc(solicitudRef, {
         throw new Error("Cliente de Supabase no inicializado");
       }
         */
-    /*
+      /*
       const { error } = await client
         .from("solicitudes_publicas")
         .update({ estado: nuevoEstado })
@@ -305,44 +315,81 @@ await updateDoc(solicitudRef, {
       */
       target.textContent = "Ingresar Vehículo";
       this.cargarSolicitudes();
-      
 
-target.textContent = "OT Creada";
+      target.textContent = "OT Creada";
 
-target.disabled = true;
+      target.disabled = true;
 
-target.classList.remove("btn-secondary");
+      target.classList.remove("btn-secondary");
 
-target.classList.add("btn-success");
+      target.classList.add("btn-success");
 
-window.otDraft = {
-  cliente: row.children[1].textContent,
-  telefono: row.children[2].textContent,
-  patente: row.children[3].textContent,
-  vehiculo:
-    row.children[4].textContent +
-    " " +
-    row.children[5].textContent,
-};
+      window.otDraft = {
+        solicitudId: target.dataset.id,
 
-window.router.navigate("ordenes-trabajo");
+        cliente: row.children[1].textContent,
 
-target.classList.remove("btn-secondary");
+        telefono: row.children[2].textContent,
 
-target.classList.add("btn-success");
+        patente: row.children[3].textContent,
+
+        vehiculo:
+          row.children[4].textContent + " " + row.children[5].textContent,
+      };
+
+      window.router.navigate("ordenes-trabajo");
+
+      target.classList.remove("btn-secondary");
+
+      target.classList.add("btn-success");
 
       if (estadoMensaje) {
         estadoMensaje.textContent = `Estado actualizado correctamente para solicitud #${id}.`;
         estadoMensaje.style.display = "block";
       }
 
-     /* this.cargarSolicitudes();*/
-
+      /* this.cargarSolicitudes();*/
     } catch (err) {
       if (estadoMensaje) {
         estadoMensaje.textContent = `No se pudo actualizar el estado: ${err.message}`;
         estadoMensaje.style.display = "block";
       }
+    }
+  },
+
+  async borrarTodo() {
+    const confirmar = confirm(
+      "¿Desea borrar TODAS las solicitudes y TODAS las órdenes de trabajo?",
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
+    try {
+      // Borrar solicitudes
+      const solicitudes = await getDocs(collection(db, "solicitudes_publicas"));
+
+      for (const documento of solicitudes.docs) {
+        await deleteDoc(documento.ref);
+      }
+
+      // Borrar órdenes de trabajo
+      const ots = await getDocs(collection(db, "ordenes_trabajo"));
+
+      for (const documento of ots.docs) {
+        await deleteDoc(documento.ref);
+      }
+
+      window.otDraft = null;
+
+      alert("Todos los datos fueron eliminados.");
+
+      this.cargarSolicitudes();
+    } catch (err) {
+      console.error(err);
+
+      alert("No fue posible borrar los datos.");
     }
   },
 
