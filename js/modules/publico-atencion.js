@@ -268,11 +268,7 @@ const PublicoAtencionModule = {
     required
   >
 </div>
-            <select name="marca" id="atencionMarca" required>
-              <option value="">Seleccione una marca</option>
-              ${MARCAS_VEHICULO.map((marca) => `<option value="${marca}">${marca}</option>`).join("")}
-            </select>
-          </div>
+            
 
           <div class="form-group">
             <label>Modelo del Vehículo *</label>
@@ -474,8 +470,11 @@ const data = snapshot.docs.map((doc) => ({
 }));
 
 data.forEach((item) => {
-        this.registerBookedSlot(item.fecha_agendada, item.hora_agendada);
-      });
+  this.registerBookedSlot(
+    item.agenda?.fecha,
+    item.agenda?.hora
+  );
+});
 
       // Cargar bloqueos del taller (días/horas marcadas como no disponibles por el dueño)
       /*const { data: bloqueos, error: errBloqueos } = await client
@@ -668,31 +667,38 @@ const payload = {
   folio: folio,
 
   tipo: "atencion",
+
   estado: "pendiente",
 
-        nombre: formData.get("nombre"),
-        telefono: formData.get("telefono"),
-        email: formData.get("email"),
+  cliente: {
+    nombre: formData.get("nombre"),
+    telefono: formData.get("telefono"),
+    email: formData.get("email"),
+  },
 
-        marca: formData.get("marca") || null,
+  vehiculo: {
+    patente: formData.get("patente").toUpperCase().trim(),
+    marca: formData.get("marca") || null,
+    modelo: formData.get("modelo") || null,
+    anio: Number(formData.get("anio")) || null,
+  },
 
-        patente: formData.get("patente").toUpperCase().trim(),
+  agenda: {
+    fecha: fechaAgendada,
+    hora: horaAgendada,
+  },
 
-        patente: formData.get("patente"),
+  servicio: formData.get("servicio"),
 
-        modelo: formData.get("modelo") || null,
+  detalle: formData.get("mensaje"),
 
-        anio: Number(formData.get("anio")) || null,
+  otId: null,
 
-        servicio: formData.get("servicio"),
+  created_at: new Date().toISOString(),
 
-        mensaje: formData.get("mensaje"),
+  updated_at: new Date().toISOString(),
 
-        fecha_agendada: fechaAgendada,
-        hora_agendada: horaAgendada,
-
-        created_at: new Date().toISOString(),
-      };
+};
 
       // Guardar en Firebase
       const docRef = await addDoc(

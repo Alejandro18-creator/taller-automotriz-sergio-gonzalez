@@ -36,6 +36,7 @@ const SolicitudesPublicasModule = {
               <th>ID</th>
               <th>Nombre</th>
               <th>Teléfono</th>
+              <th>Patente</th>
               <th>Marca</th>
               <th>Modelo</th>
               <th>Año</th>
@@ -155,18 +156,19 @@ const data = snapshot.docs.map((doc) => ({
 
       tbody.innerHTML = data
         .map((item) => {
-          const nombre = item.nombre || "-";
-          const telefono = item.telefono || "-";
-          const marca = item.marca || "-";
-          const modelo = item.modelo || "-";
-          const anio = item.anio || "-";
-          const detalle = item.mensaje || item.trabajo || item.servicio || "-";
+          const nombre = item.cliente?.nombre || "-";
+          const telefono = item.cliente?.telefono || "-";
+          const marca = item.vehiculo?.marca || "-";
+          const modelo = item.vehiculo?.modelo || "-";
+          const anio = item.vehiculo?.anio || "-";
+          const detalle = item.detalle || item.servicio || "-";
+
           const fecha = item.created_at
             ? new Date(item.created_at).toLocaleString("es-CL")
             : "-";
           const fechaAgendada = (() => {
-            if (!item.fecha_agendada) return "-";
-            const raw = String(item.fecha_agendada).trim();
+            if (!item.agenda?.fecha) return "-";
+            const raw = String(item.agenda.fecha).trim();
             // Intentar extraer YYYY-MM-DD del valor
             const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
             if (match) {
@@ -192,8 +194,8 @@ const data = snapshot.docs.map((doc) => ({
             return raw;
           })();
           const horaAgendada = (() => {
-            if (!item.hora_agendada) return "";
-            const raw = String(item.hora_agendada).trim();
+            if (!item.agenda?.hora) return "";
+            const raw = String(item.agenda.hora).trim();
             const match = raw.match(/^(\d{2}:\d{2})/);
             return match ? `${match[1]} hrs` : raw;
           })();
@@ -204,7 +206,8 @@ const data = snapshot.docs.map((doc) => ({
               <td>${item.folio ?? item.id}</td>
               <td>${nombre}</td>
               <td>${telefono}</td>
-              <td>${marca}</td>
+<td>${item.vehiculo?.patente || "-"}</td>
+<td>${marca}</td>
               <td>${modelo}</td>
               <td>${anio}</td>
               <td>${detalle}</td>
@@ -215,9 +218,17 @@ const data = snapshot.docs.map((doc) => ({
                   <select class="estado-select" data-id="${item.id}">
                     ${this.getEstadoOptions(estadoSolicitud)}
                   </select>
-                  <button class="btn btn-secondary btn-sm btn-guardar-estado" data-id="${item.id}">
-  Aceptar
-</button>
+                  <button
+                  class="btn btn-secondary btn-sm btn-guardar-estado"
+                    data-id="${item.id}">
+                    ${
+                    estadoSolicitud === "pendiente"
+                      ? "Aceptar"
+                      : estadoSolicitud === "esperando_vehiculo"
+                        ? "Ingresar Vehículo"
+                        : "Ver OT"
+                  }
+                  </button>
                 </div>
               </td>
             </tr>
@@ -307,10 +318,11 @@ target.classList.add("btn-success");
 window.otDraft = {
   cliente: row.children[1].textContent,
   telefono: row.children[2].textContent,
+  patente: row.children[3].textContent,
   vehiculo:
-    row.children[3].textContent +
+    row.children[4].textContent +
     " " +
-    row.children[4].textContent,
+    row.children[5].textContent,
 };
 
 window.router.navigate("ordenes-trabajo");

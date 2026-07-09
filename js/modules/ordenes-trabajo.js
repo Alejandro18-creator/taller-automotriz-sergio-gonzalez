@@ -81,6 +81,9 @@ const OrdenesTrabajoModule = {
     const vehiculo =
       document.getElementById("otVehiculo");
 
+    const patente =
+      document.getElementById("otPatente");
+
     if (cliente) {
       cliente.value = window.otDraft.cliente || "";
     }
@@ -91,6 +94,10 @@ const OrdenesTrabajoModule = {
 
     if (vehiculo) {
       vehiculo.value = window.otDraft.vehiculo || "";
+    }
+
+    if (patente) {
+      patente.value = window.otDraft.patente || "";
     }
 
   }
