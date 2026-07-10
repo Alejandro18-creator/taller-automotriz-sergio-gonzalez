@@ -276,6 +276,14 @@ const SolicitudesPublicasModule = {
 
     console.log("CLICK ACEPTAR");
 
+    const confirmar = confirm(
+      "¿Confirma que desea aceptar esta solicitud de atención?",
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
     const id = target.dataset.id;
 
     const row = target.closest("tr");
@@ -324,7 +332,7 @@ const SolicitudesPublicasModule = {
 
       target.classList.add("btn-success");
 
-      window.otDraft = {
+      /*window.otDraft = {
         solicitudId: target.dataset.id,
 
         cliente: row.children[1].textContent,
@@ -337,7 +345,7 @@ const SolicitudesPublicasModule = {
           row.children[4].textContent + " " + row.children[5].textContent,
       };
 
-      window.router.navigate("ordenes-trabajo");
+      window.router.navigate("ordenes-trabajo");*/
 
       target.classList.remove("btn-secondary");
 

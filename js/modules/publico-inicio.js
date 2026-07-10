@@ -9,7 +9,7 @@ const PublicoInicioModule = {
     return `
       <div class="publico-container">
         <section class="publico-hero">
-          <h2>Bienvenido a Taller Automotriz Sebastian Gonzalez</h2>
+          <h2>Bienvenido a Taller Automotriz Sergio Gonzalez</h2>
           <p>
             Servicio mecánico integral, mantenciones, diagnóstico y reparación.¿Listo para darle el mejor cuidado a tu auto?
             Garantizamos que tu vehículo esté en óptimas condiciones.

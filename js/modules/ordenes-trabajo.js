@@ -3,6 +3,7 @@ import { db } from "../firebase.js";
 import {
   collection,
   addDoc,
+  getDoc,
   doc,
   updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -60,9 +61,9 @@ const OrdenesTrabajoModule = {
               ></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">
-              Crear OT
-            </button>
+            <<button type="submit" class="btn btn-primary" id="btnGuardarOT">
+  Crear OT
+</button>
 
           </form>
 
@@ -100,12 +101,20 @@ const OrdenesTrabajoModule = {
       if (patente) {
         patente.value = window.otDraft.patente || "";
       }
+    }
+    const form = document.getElementById("formOT");
 
-      const form = document.getElementById("formOT");
+    if (form) {
+      form.addEventListener("submit", (e) => this.crearOT(e));
+    }
 
-      if (form) {
-        form.addEventListener("submit", (e) => this.crearOT(e));
-      }
+    if (window.otSeleccionada) {
+      this.cargarOT(window.otSeleccionada.id);
+    }
+    const btn = document.getElementById("btnGuardarOT");
+
+    if (btn && window.otSeleccionada) {
+      btn.textContent = "Guardar cambios";
     }
   },
 
@@ -127,37 +136,75 @@ const OrdenesTrabajoModule = {
 
       estado: "diagnostico",
 
+      updated_at: new Date().toISOString(),
+
       created_at: new Date().toISOString(),
     };
 
     try {
-      const docRef = await addDoc(collection(db, "ordenes_trabajo"), payload);
+      if (window.otSeleccionada) {
+        delete payload.created_at;
 
-      console.log("OT creada:", docRef.id);
+        await updateDoc(
+          doc(db, "ordenes_trabajo", window.otSeleccionada.id),
+          payload,
+        );
 
-      if (window.otDraft?.solicitudId) {
+        alert("OT actualizada correctamente");
 
-  await updateDoc(
-    doc(
-      db,
-      "solicitudes_publicas",
-      window.otDraft.solicitudId
-    ),
-    {
-      otId: docRef.id,
-      estado: "diagnostico",
-      updated_at: new Date().toISOString(),
-    }
-  );
+        window.otSeleccionada = null;
 
-}
+        document.getElementById("formOT").reset();
+      } else {
+        const docRef = await addDoc(collection(db, "ordenes_trabajo"), payload);
 
+        console.log("OT creada:", docRef.id);
 
-      alert("OT creada correctamente");
+        if (window.otDraft?.solicitudId) {
+          await updateDoc(
+            doc(db, "solicitudes_publicas", window.otDraft.solicitudId),
+            {
+              otId: docRef.id,
+              estado: "diagnostico",
+              updated_at: new Date().toISOString(),
+            },
+          );
+        }
+
+        alert("OT creada correctamente");
+
+        document.getElementById("formOT").reset();
+
+        window.otDraft = null;
+      }
     } catch (err) {
       console.error(err);
 
-      alert("Error al crear la OT");
+      alert("Error al guardar la OT");
+    }
+  },
+
+  async cargarOT(id) {
+    try {
+      const ref = doc(db, "ordenes_trabajo", id);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        alert("La OT no existe");
+        return;
+      }
+
+      const ot = snap.data();
+
+      document.getElementById("otCliente").value = ot.cliente || "";
+      document.getElementById("otTelefono").value = ot.telefono || "";
+      document.getElementById("otVehiculo").value = ot.vehiculo || "";
+      document.getElementById("otPatente").value = ot.patente || "";
+      document.getElementById("otKilometraje").value = ot.kilometraje || "";
+      document.getElementById("otDiagnostico").value = ot.diagnostico || "";
+    } catch (err) {
+      console.error(err);
+      alert("Error al cargar la OT");
     }
   },
 
