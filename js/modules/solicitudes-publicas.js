@@ -2,6 +2,8 @@
  * SOLICITUDES DE ATENCION - Vista interna para el taller
  */
 
+import Notificaciones from "./notificaciones.js";
+
 import { db } from "../firebase.js";
 
 import {
@@ -156,6 +158,7 @@ const SolicitudesPublicasModule = {
 
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
+        _doc: doc.data(),
         ...doc.data(),
       }));
 
@@ -172,6 +175,7 @@ const SolicitudesPublicasModule = {
         .map((item) => {
           const nombre = item.cliente?.nombre || "-";
           const telefono = item.cliente?.telefono || "-";
+          const email = item.cliente?.email || item.cliente?.correo || "-";
           const marca = item.vehiculo?.marca || "-";
           const modelo = item.vehiculo?.modelo || "-";
           const anio = item.vehiculo?.anio || "-";
@@ -220,8 +224,8 @@ const SolicitudesPublicasModule = {
               <td>${item.folio ?? item.id}</td>
               <td>${nombre}</td>
               <td>${telefono}</td>
-<td>${item.vehiculo?.patente || "-"}</td>
-<td>${marca}</td>
+              <td>${item.vehiculo?.patente || "-"}</td>
+              <td>${marca}</td>
               <td>${modelo}</td>
               <td>${anio}</td>
               <td>${detalle}</td>
@@ -232,9 +236,14 @@ const SolicitudesPublicasModule = {
                   <select class="estado-select" data-id="${item.id}">
                     ${this.getEstadoOptions(estadoSolicitud)}
                   </select>
+
                   <button
-                  class="btn btn-secondary btn-sm btn-guardar-estado"
-                    data-id="${item.id}">
+  class="btn btn-secondary btn-sm btn-guardar-estado"
+  data-id="${item.id}"
+  data-email="${email}"
+  data-patente="${item.vehiculo?.patente || ""}"
+  data-fecha="${fechaAgendada}"
+  data-hora="${horaAgendada}">
                     ${
                       estadoSolicitud === "pendiente"
                         ? "Aceptar"
@@ -305,6 +314,12 @@ const SolicitudesPublicasModule = {
         estado: "esperando_vehiculo",
       });
 
+      await Notificaciones.enviarAceptacion({
+        id,
+        nombre: row.children[1].textContent,
+        telefono: row.children[2].textContent,
+        email: target.dataset.email,
+      });
       /*
       const client = getSupabaseClient();
       if (!client) {
@@ -358,6 +373,8 @@ const SolicitudesPublicasModule = {
 
       /* this.cargarSolicitudes();*/
     } catch (err) {
+      console.error(err);
+
       if (estadoMensaje) {
         estadoMensaje.textContent = `No se pudo actualizar el estado: ${err.message}`;
         estadoMensaje.style.display = "block";
