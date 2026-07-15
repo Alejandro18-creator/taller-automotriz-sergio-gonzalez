@@ -238,12 +238,12 @@ const SolicitudesPublicasModule = {
                   </select>
 
                   <button
-  class="btn btn-secondary btn-sm btn-guardar-estado"
-  data-id="${item.id}"
-  data-email="${email}"
-  data-patente="${item.vehiculo?.patente || ""}"
-  data-fecha="${fechaAgendada}"
-  data-hora="${horaAgendada}">
+                    class="btn btn-secondary btn-sm btn-guardar-estado"
+                    data-id="${item.id}"
+                    data-email="${email}"
+                    data-patente="${item.vehiculo?.patente || ""}"
+                    data-fecha="${fechaAgendada}"
+                    data-hora="${horaAgendada}">
                     ${
                       estadoSolicitud === "pendiente"
                         ? "Aceptar"
@@ -295,6 +295,13 @@ const SolicitudesPublicasModule = {
 
     const id = target.dataset.id;
 
+    const textoBoton = target.textContent.trim();
+
+    if (textoBoton === "Ingresar Vehículo") {
+      window.router.navigate("ingreso-vehiculo");
+      return;
+    }
+
     const row = target.closest("tr");
 
     const estadoSelect = row ? row.querySelector(".estado-select") : null;
@@ -319,6 +326,9 @@ const SolicitudesPublicasModule = {
         nombre: row.children[1].textContent,
         telefono: row.children[2].textContent,
         email: target.dataset.email,
+        patente: target.dataset.patente,
+        fecha: target.dataset.fecha,
+        hora: target.dataset.hora,
       });
       /*
       const client = getSupabaseClient();
@@ -338,14 +348,6 @@ const SolicitudesPublicasModule = {
       */
       target.textContent = "Ingresar Vehículo";
       this.cargarSolicitudes();
-
-      target.textContent = "OT Creada";
-
-      target.disabled = true;
-
-      target.classList.remove("btn-secondary");
-
-      target.classList.add("btn-success");
 
       /*window.otDraft = {
         solicitudId: target.dataset.id,

@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { Resend } = require("resend");
+const generarCorreoAceptacion = require("./templates/aceptacion");
 
 const app = express();
 
@@ -15,16 +16,23 @@ app.get("/", (req, res) => {
   res.send("Backend Taller Automotriz funcionando.");
 });
 
-app.get("/test", async (req, res) => {
+app.post("/enviar-aceptacion", async (req, res) => {
   try {
+    console.log("=== PETICIÓN RECIBIDA ===");
+    console.log(req.body);
+
+    const { nombre, email, patente, fecha, hora } = req.body;
+
     const resultado = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "alejandrocastillop50@gmail.com",
-      subject: "Prueba Taller Automotriz",
-      html: `
-        <h2>¡Funcionó!</h2>
-        <p>Este es el primer correo enviado desde el backend del Taller Automotriz Sergio González.</p>
-      `,
+      to: email,
+      subject: "Confirmación de cita - Taller Automotriz Sergio González",
+      html: generarCorreoAceptacion({
+        nombre,
+        patente,
+        fecha,
+        hora,
+      }),
     });
 
     console.log(resultado);

@@ -16,6 +16,7 @@ import PublicoInicioModule from "./modules/publico-inicio.js";
 import PublicoAtencionModule from "./modules/publico-atencion.js";
 import DisponibilidadModule from "./modules/disponibilidad.js";
 import OrdenesCreadasModule from "./modules/ordenes-creadas.js";
+import IngresoVehiculoModule from "./modules/ingreso-vehiculo.js";
 
 // Registro de módulos disponibles
 const modules = {
@@ -27,6 +28,7 @@ const modules = {
   reportes: ReportesModule,
   reservas: ReservasModule,
   "solicitudes-publicas": SolicitudesPublicasModule,
+  "ingreso-vehiculo": IngresoVehiculoModule,
   "publico-inicio": PublicoInicioModule,
   "publico-atencion": PublicoAtencionModule,
   "ordenes-creadas": OrdenesCreadasModule,
