@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { Resend } = require("resend");
+
 const generarCorreoAceptacion = require("./templates/aceptacion");
 
 const app = express();
@@ -21,7 +22,7 @@ app.post("/enviar-aceptacion", async (req, res) => {
     console.log("=== PETICIÓN RECIBIDA ===");
     console.log(req.body);
 
-    const { nombre, email, patente, fecha, hora } = req.body;
+    const { nombre, email, marca, patente, fecha, hora } = req.body;
 
     const resultado = await resend.emails.send({
       from: "onboarding@resend.dev",
@@ -29,6 +30,7 @@ app.post("/enviar-aceptacion", async (req, res) => {
       subject: "Confirmación de cita - Taller Automotriz Sergio González",
       html: generarCorreoAceptacion({
         nombre,
+        marca,
         patente,
         fecha,
         hora,

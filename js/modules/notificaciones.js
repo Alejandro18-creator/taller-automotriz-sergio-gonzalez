@@ -3,7 +3,6 @@ const NOMBRE_TALLER = "Taller Automotriz Sergio González";
 const Notificaciones = {
   async enviarAceptacion(solicitud) {
     try {
-      
       const respuesta = await fetch("http://localhost:3000/enviar-aceptacion", {
         method: "POST",
         headers: {
@@ -12,6 +11,7 @@ const Notificaciones = {
         body: JSON.stringify({
           nombre: solicitud.nombre,
           email: solicitud.email,
+          marca: solicitud.marca,
           patente: solicitud.patente,
           fecha: solicitud.fecha,
           hora: solicitud.hora,
@@ -21,9 +21,7 @@ const Notificaciones = {
       const resultado = await respuesta.json();
 
       console.log("Correo enviado:", resultado);
-    } 
-    
-    catch (error) {
+    } catch (error) {
       console.error("Error enviando correo:", error);
     }
   },

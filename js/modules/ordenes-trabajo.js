@@ -61,7 +61,7 @@ const OrdenesTrabajoModule = {
               ></textarea>
             </div>
 
-            <<button type="submit" class="btn btn-primary" id="btnGuardarOT">
+            <button type="submit" class="btn btn-primary" id="btnGuardarOT">
   Crear OT
 </button>
 

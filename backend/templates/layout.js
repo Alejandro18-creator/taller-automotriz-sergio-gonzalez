@@ -4,80 +4,136 @@ function generarLayout({ titulo, contenido }) {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f5f5;
+    color:#333;
+    padding:30px 15px;
+}
+
+.contenedor{
+    max-width:650px;
+    margin:auto;
+    background:#ffffff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+}
+
+.header{
+    background:#1c1c1c;
+    text-align:center;
+    padding:35px;
+}
+
+.logo{
+    width:120px;
+    margin-bottom:15px;
+}
+
+.header h1{
+    color:#ffffff;
+    font-size:24px;
+}
+
+.cuerpo{
+    padding:40px;
+    line-height:1.8;
+    font-size:16px;
+    color:#444;
+}
+
+.tarjeta{
+    background:#f8f8f8;
+    border-left:5px solid #d91515;
+    border-radius:10px;
+    padding:20px;
+    margin:25px 0;
+}
+
+.tarjeta strong{
+    color:#1c1c1c;
+}
+
+.texto-secundario{
+    color:#777;
+    font-size:14px;
+}
+
+.cuerpo h2{
+    color:#d91515;
+    margin-bottom:20px;
+}
+
+.boton{
+    display:inline-block;
+    margin-top:25px;
+    background:#d91515;
+    color:#fff !important;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.footer{
+    background:#1c1c1c;
+    color:#ccc;
+    text-align:center;
+    padding:25px;
+    font-size:13px;
+}
+
+.footer strong{
+    color:#fff;
+}
+</style>
 </head>
 
-<body style="
-  margin:0;
-  padding:0;
-  background:#f4f4f4;
-  font-family:Arial, Helvetica, sans-serif;
-">
+<body>
 
-<table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
-<tr>
-<td align="center">
+<div class="contenedor">
 
-<table
-width="600"
-cellpadding="0"
-cellspacing="0"
-style="
-background:#ffffff;
-border-radius:10px;
-overflow:hidden;
-border:1px solid #dddddd;
-">
+    <div class="header">
 
-<tr>
-<td
-style="
-background:#1f2937;
-padding:25px;
-text-align:center;
-color:#ffffff;
-">
-
-<h1 style="margin:0;font-size:26px;">
-🚗 Taller Automotriz Sergio González
+        <!-- Aquí irá el logo -->
+        <h1 style="color:#fff;font-size:30px;margin-bottom:8px;">
+    Taller Automotriz
 </h1>
 
-<p style="margin-top:8px;">
-${titulo}
+<p style="color:#d91515;font-size:20px;font-weight:bold;">
+    Sergio González
 </p>
 
-</td>
-</tr>
+<hr style="margin:25px auto;width:70px;border:2px solid #d91515;">
 
-<tr>
-<td style="padding:35px;">
+    </div>
 
-${contenido}
+    <div class="cuerpo">
 
-</td>
-</tr>
+        ${contenido}
 
-<tr>
-<td
-style="
-background:#f7f7f7;
-padding:20px;
-font-size:13px;
-text-align:center;
-color:#666;
-">
+    </div>
 
-Taller Automotriz Sergio González<br>
+    <div class="footer">
 
-📞 +56 9 7552 0550
+    <strong>Taller Automotriz Sergio González</strong><br>
+    Especialistas en mantenimiento y reparación automotriz<br><br>
 
-</td>
-</tr>
+    Gracias por confiar en nosotros.
 
-</table>
+</div>
 
-</td>
-</tr>
-</table>
+</div>
 
 </body>
 </html>

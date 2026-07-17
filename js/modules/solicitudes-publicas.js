@@ -326,6 +326,7 @@ const SolicitudesPublicasModule = {
         nombre: row.children[1].textContent,
         telefono: row.children[2].textContent,
         email: target.dataset.email,
+        marca: row.children[4].textContent,
         patente: target.dataset.patente,
         fecha: target.dataset.fecha,
         hora: target.dataset.hora,
